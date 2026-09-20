@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "buy-sponsorship",
+      "type": "skill",
+      "description": "Prüft feste Sponsorplätze und erstellt nach ausdrücklicher Auswahl eine idempotente Stripe-Checkout-Session für den Käufer.",
+      "url": "https://kannkidas.de/skills/buy-sponsorship.md",
+      "digest": "sha256:bc7fc6464b6368cc183259685f5f8a53a545b7cc413d2cbfcc1aa8749f3784a5"
+    },
+    {
+      "name": "find-software",
+      "type": "skill",
+      "description": "Findet deutschsprachige Build-or-buy-Analysen zu bekannter Software und liefert passende kanonische URLs zurück.",
+      "url": "https://kannkidas.de/skills/find-software.md",
+      "digest": "sha256:f1e0f03ee9e532cb9076fc782141c393969ac463484e046f94098da74acdf1d5"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://kannkidas.de/openapi.json (info.version), https://kannkidas.de/AGENTS.md ("Last updated: 2026-08-13"),
+  https://kannkidas.de/nutzungsbedingungen/ (§6 availability), https://kannkidas.de/.well-known/agent-skills/index.json
+  (versioned skills with digests), and probes of status.kannkidas.de (no DNS record), /status/ and /changelog/ (404).
+versioning:
+  scheme: none-in-request
+  current: 1.1.0
+  mechanism: >-
+    No version segment in the API path and no version header; the contract itself carries info.version 1.1.0.
+    The /v1 path is the x402 demo endpoint, not an API version prefix. The MCP server card and agent card carry
+    version 1.0.0; the Agent Skills are versioned (1.0.0) and pinned by SHA-256 digest in the discovery index.
+  docs: https://kannkidas.de/agents/
+  last_updated_statement: 'AGENTS.md: Last updated 2026-08-13; /agents/ page: Aktualisiert am 13. August 2026; schemamap lastmod 2026-09-05.'
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No deprecation policy is published and no operation in the OpenAPI is flagged deprecated.
+sla:
+  url: https://kannkidas.de/nutzungsbedingungen/
+  public_uptime_target: null
+  notes: >-
+    Terms §6 (Verfügbarkeit und Reichweite) promise the agreed placement for the term, allow short interruptions
+    for maintenance or security, and compensate material outages the operator is responsible for by extending the
+    placement — a commercial remedy for sponsors, not an API availability SLA. No numeric uptime target.
+status_page: null
+status_page_probe:
+  - {url: 'https://status.kannkidas.de/', result: 'no DNS record'}
+  - {url: 'https://kannkidas.de/status/', status: 404}
+changelog: null
+changelog_probe:
+  - {url: 'https://kannkidas.de/changelog/', status: 404}
+  - note: /feed.xml is an RSS feed of new and updated software analyses (content), not an API changelog.
+deprecated_operations: []
+purchase_lifecycle:
+  note: Not an API lifecycle, but the only state machine the contract documents.
+  purchase_states: [checkout_created, paid, expired]
+  slot_states_openapi: [available, held, sold, active]
+  slot_states_mcp: [available, held, sold, review, active]
+  hold: A created checkout holds the slot until expires_at (Purchase.expires_at); the term of 30 days starts only after manual creative approval and publication (pricing.md, terms §3).

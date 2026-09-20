@@ -1,0 +1,20 @@
+{
+  "serverInfo": {
+    "name": "kannkidas-sponsorship",
+    "version": "1.0.0"
+  },
+  "description": "Sponsorplätze prüfen und nach ausdrücklicher Käuferfreigabe eine Stripe-Checkout-Session erstellen.",
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://kannkidas.de/api/mcp"
+  },
+  "authentication": {
+    "type": "oauth2",
+    "protectedResourceMetadata": "https://kannkidas.de/.well-known/oauth-protected-resource"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  }
+}

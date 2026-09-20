@@ -1,0 +1,99 @@
+generated: '2026-09-19'
+method: derived
+source: Derived from components.schemas and the id-reference fields in openapi/kannkidas-de-openapi.yml (8 schemas), the external JSON Schema https://kannkidas.de/schema/agent-purchase.json,
+  and the MCP outputSchema for list_sponsor_slots (which adds the optional sponsor object).
+docs: https://kannkidas.de/openapi.json
+notation: relationships use has_one / has_many / belongs_to with the referencing field; direction is from the entity that owns the reference.
+entities:
+- name: Product
+  id_format: lowercase slug ^[a-z0-9][a-z0-9-]*$
+  domain: content
+  description: A published build-or-buy analysis (SearchHit type product) with company, category, verdict, verdictLabel, score, url.
+- name: Category
+  domain: content
+  description: A product category (SearchHit type category); also a search facet.
+- name: SearchHit
+  domain: content
+  description: A ranked search result of type product or category with highlights.
+- name: Suggestion
+  domain: content
+  description: A typeahead suggestion of kind product, category or query.
+- name: SearchResponse
+  domain: content
+  description: found/page/perPage/mode/tookMs plus hits[] and facets.
+- name: SponsorSlot
+  id_format: ^P(?:0[1-9]|10)$
+  domain: commerce
+  description: One of ten fixed placements with status available/held/sold/(review)/active and, when occupied, a public sponsor {name, line, url}.
+- name: Sponsor
+  domain: commerce
+  description: 'Public creative shown in a slot: name, line, url (MCP outputSchema only).'
+- name: AgentClient
+  domain: identity
+  description: An OAuth client registered anonymously with a name and granted scopes; secret returned once.
+- name: AccessToken
+  domain: identity
+  description: Short-lived opaque bearer token issued by client_credentials with scope sponsorship:read or sponsorship:write.
+- name: PurchaseRequest
+  domain: commerce
+  description: '{slot_id, buyer_confirmed const true} per schema/agent-purchase.json.'
+- name: Purchase
+  id_format: ^pur_[a-f0-9]{32}$
+  domain: commerce
+  description: A checkout session for a slot with status checkout_created/paid/expired, checkout_url, status_url, expires_at, amount 99000, currency EUR.
+- name: Error
+  domain: platform
+  description: '{message}.'
+relationships:
+- from: SearchResponse
+  to: SearchHit
+  kind: has_many
+  via: hits
+- from: SearchHit
+  to: Product
+  kind: belongs_to
+  via: id (when type = product)
+- from: SearchHit
+  to: Category
+  kind: belongs_to
+  via: category
+- from: Product
+  to: Category
+  kind: belongs_to
+  via: category
+- from: Product
+  to: Product
+  kind: has_many
+  via: getSimilarProducts(id) -> hits[] (nearest neighbours)
+- from: Suggestion
+  to: Category
+  kind: belongs_to
+  via: category
+- from: SponsorSlot
+  to: Sponsor
+  kind: has_one
+  via: sponsor
+- from: PurchaseRequest
+  to: SponsorSlot
+  kind: belongs_to
+  via: slot_id
+- from: Purchase
+  to: SponsorSlot
+  kind: belongs_to
+  via: slot_id
+- from: SponsorSlot
+  to: Purchase
+  kind: has_many
+  via: slot_id (one active hold at a time; status held/sold/active)
+- from: AgentClient
+  to: AccessToken
+  kind: has_many
+  via: client_credentials grant
+- from: AgentClient
+  to: Purchase
+  kind: has_many
+  via: bearer token on createSponsorPurchase; getSponsorPurchase reads own purchases
+- from: Purchase
+  to: Stripe Checkout Session
+  kind: has_one
+  via: checkout_url (external)

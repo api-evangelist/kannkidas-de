@@ -1,0 +1,55 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Kann KI das? API
+  version: 1.0.0
+  description: >-
+    Non-destructive enhancements to the verbatim provider contract (openapi/kannkidas-de-openapi.yml, source
+    https://kannkidas.de/openapi.json v1.1.0). Adds tag declarations and per-operation tags (the source declares
+    none), cross-links to the agent surfaces that back each operation, and x-apievangelist provenance. The original
+    file is never mutated.
+extends: openapi/kannkidas-de-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: kannkidas-de
+      x-apievangelist-harvested: '2026-09-19'
+      x-apievangelist-source: https://kannkidas.de/openapi.json
+      x-agent-surfaces:
+        mcp: https://kannkidas.de/api/mcp
+        a2a: https://kannkidas.de/api/a2a
+        agent_card: https://kannkidas.de/.well-known/agent-card.json
+        skills: https://kannkidas.de/.well-known/agent-skills/index.json
+        instructions: https://kannkidas.de/AGENTS.md
+  - target: $
+    update:
+      tags:
+        - {name: Search, description: Faceted search over published build-or-buy analyses}
+        - {name: Sponsor Slots, description: Live availability of the ten fixed placements}
+        - {name: Agent Identity, description: Anonymous OAuth client registration and token issuance}
+        - {name: Sponsor Purchases, description: Buyer-confirmed Stripe hosted Checkout}
+        - {name: x402 Demo, description: Testnet protocol-conformance endpoint}
+  - target: $.paths['/search'].get
+    update: {tags: [Search]}
+  - target: $.paths['/search/suggestions'].get
+    update: {tags: [Search]}
+  - target: $.paths['/search/similar'].get
+    update: {tags: [Search]}
+  - target: $.paths['/slots'].get
+    update:
+      tags: [Sponsor Slots]
+      x-mcp-tool: list_sponsor_slots
+      x-a2a-skill: list-sponsor-slots
+  - target: $.paths['/v1'].get
+    update: {tags: [x402 Demo]}
+  - target: $.paths['/agent/register'].post
+    update: {tags: [Agent Identity], x-rfc: RFC 7591 (anonymous registration)}
+  - target: $.paths['/oauth/token'].post
+    update: {tags: [Agent Identity]}
+  - target: $.paths['/agent/purchases'].post
+    update:
+      tags: [Sponsor Purchases]
+      x-mcp-tool: create_sponsor_checkout
+      x-consent-gate: buyer_confirmed const true
+      x-idempotency: Idempotency-Key header (required)
+  - target: $.paths['/agent/purchases/{purchase_id}'].get
+    update: {tags: [Sponsor Purchases]}

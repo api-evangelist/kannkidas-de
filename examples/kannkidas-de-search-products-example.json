@@ -1,0 +1,127 @@
+{
+  "x-provenance": {
+    "generated": "2026-09-19",
+    "method": "probed",
+    "note": "Real unauthenticated request issued 2026-09-19; response body saved as returned (search hits truncated).",
+    "operationId": "searchProductsAndCategories",
+    "openapi": "openapi/kannkidas-de-openapi.yml"
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://kannkidas.de/api/search?q=crm"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "apigw-requestid": "D-Ocsh2bliAEJoA=",
+      "cache-control": "no-store",
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+    },
+    "body": {
+      "query": "crm",
+      "found": 26,
+      "page": 1,
+      "perPage": 24,
+      "mode": "hybrid",
+      "tookMs": 1264,
+      "hits": [
+        {
+          "id": "zoho-crm",
+          "type": "product",
+          "name": "Zoho CRM",
+          "company": "Zoho",
+          "url": "/produkte/zoho-crm/",
+          "category": "Vertrieb & Support",
+          "summary": "Kontakte, Deals, Aktivitäten und ein klarer Pipeline-Prozess sind gut baubar; freie Anpassbarkeit, E-Mail-Sync, Forecasting, Automationen und das Zoho-Ökosystem erhöhen den dauerhaften Aufwand.",
+          "verdict": "machbar-mit-grenzen",
+          "verdictLabel": "Für einen festen Sales-Prozess machbar",
+          "score": 68,
+          "highlights": {
+            "name": "Zoho <mark>CRM</mark>"
+          }
+        },
+        {
+          "id": "salesforce",
+          "type": "product",
+          "name": "Salesforce",
+          "company": "Salesforce",
+          "url": "/produkte/salesforce/",
+          "category": "Vertrieb & Support",
+          "summary": "Kontakte, Firmen und eine einfache Vertriebspipeline sind baubar. Salesforce ist eine anpassbare Unternehmensplattform mit Rechten, Automationen, Integrationen, Reporting, Marketplace und jahrzehntelanger Datenhistorie.",
+          "verdict": "nur-klein",
+          "verdictLabel": "Enterprise-CRM nicht nachbauen",
+          "score": 24,
+          "highlights": {}
+        },
+        {
+          "id": "vertrieb-support",
+          "type": "category",
+          "name": "Vertrieb & Support",
+          "url": "/kategorien/vertrieb-support/",
+          "summary": "Ein CRM für einen festen Sales-Prozess oder ein E-Mail-Ticketsystem für ein kleines Team lässt sich mit KI begrenzt nachbauen. Der Scope wächst bei freier Anpassung, Omnichannel, E-Mail-Sync, SLA, Forecasting und feinen Rechten. KI eignet sich eher als überprüfbare Assistenz als für autonome Kundenkommunikation.",
+          "highlights": {
+            "summary": "Ein <mark>CRM</mark> für einen festen Sales-Prozess"
+          }
+        }
+      ],
+      "facets": {
+        "type": [
+          {
+            "value": "product",
+            "count": 24
+          },
+          {
+            "value": "category",
+            "count": 2
+          }
+        ],
+        "category": [
+          {
+            "value": "Buchhaltung & Betrieb",
+            "count": 8
+          },
+          {
+            "value": "Vertrieb & Support",
+            "count": 5
+          },
+          {
+            "value": "Marketing & Analytics",
+            "count": 4
+          },
+          {
+            "value": "Produktivität & Planung",
+            "count": 4
+          },
+          {
+            "value": "Kommunikation & Dateien",
+            "count": 2
+          },
+          {
+            "value": "Websites & Handel",
+            "count": 1
+          }
+        ],
+        "verdict": [
+          {
+            "value": "machbar-mit-grenzen",
+            "count": 11
+          },
+          {
+            "value": "nur-klein",
+            "count": 7
+          },
+          {
+            "value": "gut-ersetzbar",
+            "count": 3
+          },
+          {
+            "value": "nicht-sinnvoll",
+            "count": 3
+          }
+        ]
+      },
+      "_note": "hits truncated to 3 of 24 returned for size"
+    }
+  }
+}

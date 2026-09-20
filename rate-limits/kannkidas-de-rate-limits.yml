@@ -1,0 +1,35 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Kann KI das?
+providerId: kannkidas-de
+created: '2026-09-19'
+modified: '2026-09-19'
+generated: '2026-09-19'
+method: probed
+sources:
+  - https://kannkidas.de/openapi.json
+  - https://kannkidas.de/auth.md
+  - https://kannkidas.de/AGENTS.md
+  - https://kannkidas.de/agents/
+tags:
+  - Rate Limiting
+description: >-
+  No rate limits are documented anywhere on the provider's agent surface (OpenAPI, auth.md, AGENTS.md, /agents/),
+  no 429 is declared on any operation, and live unauthenticated responses from /api/slots, /api/search and /api/v1
+  on 2026-09-19 carried no RateLimit-*, X-RateLimit-* or Retry-After headers. The only throttling-adjacent signals
+  are a 15-second public cache on /api/slots and the constraint that search q is capped at 160 characters and
+  perPage at 60. An honest zero.
+limit_count: 0
+limits: []
+headers:
+  requestId: apigw-requestid
+  rateLimit: null
+  retryAfter: null
+responseCodes:
+  throttled: null
+observed:
+  - {url: https://kannkidas.de/api/slots, status: 200, cache_control: 'public, max-age=15, s-maxage=15', rate_limit_headers: none}
+  - {url: 'https://kannkidas.de/api/search?q=crm', status: 200, cache_control: no-store, rate_limit_headers: none}
+  - {url: https://kannkidas.de/api/v1, status: 402, cache_control: no-store, rate_limit_headers: none}
+note: Tokens are described as short-lived (auth.md) but no lifetime is stated.

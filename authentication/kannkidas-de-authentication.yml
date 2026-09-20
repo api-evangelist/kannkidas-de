@@ -1,0 +1,51 @@
+generated: '2026-09-19'
+method: searched
+source: openapi/kannkidas-de-openapi.yml
+docs: https://kannkidas.de/auth.md
+discovery:
+  oauth_authorization_server: https://kannkidas.de/.well-known/oauth-authorization-server
+  openid_configuration: https://kannkidas.de/.well-known/openid-configuration
+  oauth_protected_resource: https://kannkidas.de/.well-known/oauth-protected-resource
+  jwks_uri: https://kannkidas.de/.well-known/jwks.json (empty key set — tokens are opaque)
+  issuer: https://kannkidas.de
+  resource: https://kannkidas.de/api
+summary:
+  types:
+  - none
+  - http
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+  anonymous_operations: [searchProductsAndCategories, suggestSearchTerms, getSimilarProducts, listSponsorSlots, registerAgentClient, getPaidSponsorBuyerBrief (x402 402)]
+  registration: anonymous dynamic client registration at POST https://kannkidas.de/api/agent/register (JSON {name 3-80 chars, scopes?}); the client secret is returned exactly once.
+  token: POST https://kannkidas.de/api/oauth/token, HTTP Basic (client_secret_basic), grant_type=client_credentials, optional scope (default sponsorship:read); returns a short-lived opaque bearer token (lifetime not stated).
+  bearer_methods_supported: [header]
+  rule: Send tokens only in the Authorization header; never place a client secret or token in a URL (auth.md).
+  agent_auth_extension: The served metadata carries a non-standard agent_auth block (skill https://kannkidas.de/auth.md, identity_types_supported [anonymous], credential_types_supported [oauth_client_credentials]).
+schemes:
+- name: clientBasic
+  type: http
+  scheme: basic
+  applies_to: [issueAgentAccessToken]
+  note: client_id / client_secret from registration, used only at the token endpoint.
+  sources:
+  - openapi/kannkidas-de-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://kannkidas.de/api/oauth/token
+    scopes: 2
+  applies_to:
+    createSponsorPurchase: [sponsorship:write]
+    getSponsorPurchase: [sponsorship:read]
+  sources:
+  - openapi/kannkidas-de-openapi.yml
+  - https://kannkidas.de/auth.md
+mcp:
+  endpoint: https://kannkidas.de/api/mcp
+  server_card_authentication: oauth2 with protectedResourceMetadata https://kannkidas.de/.well-known/oauth-protected-resource
+  observed: initialize and tools/list succeed anonymously; create_sponsor_checkout requires sponsorship:write.
+a2a:
+  endpoint: https://kannkidas.de/api/a2a
+  observed: anonymous, read-only; the agent card declares no securitySchemes.

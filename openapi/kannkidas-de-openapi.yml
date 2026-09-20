@@ -1,0 +1,448 @@
+openapi: 3.1.1
+info:
+  title: Kann KI das? API
+  version: 1.1.0
+  description: Faceted product search plus machine-readable availability and buyer-confirmed Stripe Checkout for fixed sponsor placements.
+servers:
+- url: https://kannkidas.de/api
+paths:
+  /search:
+    get:
+      operationId: searchProductsAndCategories
+      summary: Search and facet products and categories
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+          maxLength: 160
+      - name: type
+        in: query
+        schema:
+          enum:
+          - product
+          - category
+      - name: category
+        in: query
+        schema:
+          type: string
+      - name: verdict
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: perPage
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 60
+      responses:
+        '200':
+          description: Ranked results and facet counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid search parameters
+  /search/suggestions:
+    get:
+      operationId: suggestSearchTerms
+      summary: Suggest products, categories and repeated successful queries
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+          maxLength: 160
+        required: true
+      responses:
+        '200':
+          description: At most eight suggestions
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - suggestions
+                properties:
+                  suggestions:
+                    type: array
+                    maxItems: 8
+                    items:
+                      $ref: '#/components/schemas/Suggestion'
+  /search/similar:
+    get:
+      operationId: getSimilarProducts
+      summary: Return three nearest-neighbor products
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-z0-9][a-z0-9-]*$
+      responses:
+        '200':
+          description: Nearest products excluding the source product
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - hits
+                properties:
+                  hits:
+                    type: array
+                    maxItems: 3
+                    items:
+                      $ref: '#/components/schemas/SearchHit'
+  /slots:
+    get:
+      operationId: listSponsorSlots
+      summary: List live sponsor-slot availability
+      responses:
+        '200':
+          description: Current slot states
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlotList'
+  /v1:
+    get:
+      operationId: getPaidSponsorBuyerBrief
+      summary: Fetch a sponsor buyer brief through x402
+      description: Protocol-conformance endpoint on Base Sepolia testnet. Commercial sponsor placements remain EUR purchases through buyer-confirmed Stripe hosted Checkout.
+      responses:
+        '200':
+          description: Paid buyer brief and live slot availability
+          headers:
+            PAYMENT-RESPONSE:
+              schema:
+                type: string
+                contentEncoding: base64
+        '402':
+          description: x402 v2 payment requirements
+          headers:
+            PAYMENT-REQUIRED:
+              required: true
+              schema:
+                type: string
+                contentEncoding: base64
+  /agent/register:
+    post:
+      operationId: registerAgentClient
+      summary: Register an OAuth client for an agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        '201':
+          description: Client credentials returned once
+        '400':
+          description: Invalid registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /oauth/token:
+    post:
+      operationId: issueAgentAccessToken
+      summary: Issue an opaque access token using client credentials
+      security:
+      - clientBasic: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - grant_type
+              properties:
+                grant_type:
+                  const: client_credentials
+                scope:
+                  type: string
+                  default: sponsorship:read
+      responses:
+        '200':
+          description: Short-lived bearer token
+        '401':
+          description: Invalid client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /agent/purchases:
+    post:
+      operationId: createSponsorPurchase
+      summary: Create an idempotent Stripe Checkout Session
+      description: Call only after the buyer explicitly confirms a live slot, price and term. Payment details are collected by Stripe.
+      security:
+      - oauth2:
+        - sponsorship:write
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 128
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseRequest'
+      x-payment-info:
+        intent: session
+        method: stripe
+        amount: 99000
+        currency: EUR
+        methods:
+        - method: stripe
+          type: hosted_checkout
+      responses:
+        '201':
+          description: Checkout created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Bearer token missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Slot unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /agent/purchases/{purchase_id}:
+    get:
+      operationId: getSponsorPurchase
+      summary: Read a purchase without exposing buyer PII
+      security:
+      - oauth2:
+        - sponsorship:read
+      parameters:
+      - name: purchase_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Purchase state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Purchase'
+        '404':
+          description: Unknown purchase
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    clientBasic:
+      type: http
+      scheme: basic
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://kannkidas.de/api/oauth/token
+          scopes:
+            sponsorship:read: Read own purchase status
+            sponsorship:write: Create a confirmed checkout
+  schemas:
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    SearchHit:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - url
+      - summary
+      - highlights
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - product
+          - category
+        name:
+          type: string
+        company:
+          type: string
+        url:
+          type: string
+        category:
+          type: string
+        summary:
+          type: string
+        verdict:
+          type: string
+        verdictLabel:
+          type: string
+        score:
+          type: integer
+        highlights:
+          type: object
+          additionalProperties:
+            type: string
+    SearchResponse:
+      type: object
+      required:
+      - found
+      - page
+      - perPage
+      - mode
+      - tookMs
+      - hits
+      - facets
+      properties:
+        found:
+          type: integer
+          minimum: 0
+        page:
+          type: integer
+          minimum: 1
+        perPage:
+          type: integer
+          minimum: 1
+          maximum: 60
+        mode:
+          enum:
+          - hybrid
+          - lexical
+          - lexical-fallback
+        tookMs:
+          type: integer
+          minimum: 0
+        hits:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchHit'
+        facets:
+          type: object
+    Suggestion:
+      type: object
+      required:
+      - kind
+      - label
+      properties:
+        kind:
+          enum:
+          - product
+          - category
+          - query
+        label:
+          type: string
+        url:
+          type: string
+        category:
+          type: string
+    RegistrationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 80
+        scopes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            enum:
+            - sponsorship:read
+            - sponsorship:write
+          default:
+          - sponsorship:read
+    PurchaseRequest:
+      $ref: https://kannkidas.de/schema/agent-purchase.json
+    Purchase:
+      type: object
+      required:
+      - purchase_id
+      - slot_id
+      - status
+      - status_url
+      properties:
+        purchase_id:
+          type: string
+        slot_id:
+          type: string
+        status:
+          enum:
+          - checkout_created
+          - paid
+          - expired
+        checkout_url:
+          type: string
+          format: uri
+        status_url:
+          type: string
+          format: uri
+        expires_at:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+          const: 99000
+        currency:
+          type: string
+          const: EUR
+    SlotList:
+      type: object
+      required:
+      - slots
+      properties:
+        slots:
+          type: array
+          items:
+            type: object
+            required:
+            - id
+            - status
+            properties:
+              id:
+                type: string
+              status:
+                enum:
+                - available
+                - held
+                - sold
+                - active

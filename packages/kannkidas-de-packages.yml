@@ -1,0 +1,14 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  registry.npmjs.org search "kannkidas" (total 0), pypi.org/pypi/kannkidas/json (404), GitHub repository search
+  "kannkidas" (0 results), the operator's GitHub profile linked from the site footer (no kannkidas repository), and
+  the /agents/ protocol register, which lists no SDK, CLI or client package. The provider ships no first-party
+  client library; agents are expected to consume the OpenAPI, the MCP endpoint or the A2A endpoint directly.
+package_count: 0
+packages: []
+searched:
+  - {registry: npm, query: kannkidas, result: 0}
+  - {registry: pypi, package: kannkidas, status: 404}
+  - {registry: github, query: kannkidas, result: 0}
+note: No SDKs pointer is emitted — there is nothing to point at.

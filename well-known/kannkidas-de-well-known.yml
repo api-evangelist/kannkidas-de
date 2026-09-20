@@ -1,0 +1,111 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/* path list on kannkidas.de and www.kannkidas.de, 2026-09-19. Every
+  row is a request that was issued; every status is the one returned. kannkidas.de is simultaneously the website,
+  the OpenAPI servers[] host (https://kannkidas.de/api), the MCP host (/api/mcp), the A2A host (/api/a2a), the
+  OAuth issuer and the resource server named in oauth-protected-resource, so one host carries the whole surface.
+summary:
+  hosts_probed: 2
+  paths_probed: 24
+  documents_served: 10
+  hit_count: 10
+  path_echo_control: passed
+  note: >-
+    An RFC 9727 API catalog linkset, RFC 8414 authorization-server metadata (identical body to the OpenID
+    configuration), RFC 9728 protected-resource metadata, an A2A agent card, an MCP server card, an Agent Skills
+    discovery index, a JWKS (empty key set — the server issues opaque tokens), a UCP profile at /.well-known/ucp
+    (the .json variant 404s), and a robots.txt carrying a Content-Signal directive. No security.txt, no
+    ai-plugin.json, no apis.json at any of the three locations, no AAuth resource document.
+hosts:
+  - host: kannkidas.de
+    role: Website, API, MCP, A2A and OAuth issuer host (single host)
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        file: kannkidas-de-api-catalog.json
+        standard: RFC 9727
+        note: Linkset anchors the two schema.org corpora (/schema/product.json, /schema/page.json) and /schemamap.xml with service-doc /methodik/; it does not anchor the OpenAPI or the MCP endpoint.
+      - path: /.well-known/api-catalog.json
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-openid-configuration.json
+        standard: OpenID Connect Discovery 1.0 (partial — response_types_supported ["none"], grant client_credentials only)
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-oauth-authorization-server.json
+        standard: RFC 8414
+        note: Byte-identical to openid-configuration. Declares registration_endpoint https://kannkidas.de/api/agent/register (anonymous), scopes sponsorship:read / sponsorship:write, and a non-standard agent_auth block pointing at /auth.md.
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-oauth-protected-resource.json
+        standard: RFC 9728
+        note: resource https://kannkidas.de/api, authorization_servers [https://kannkidas.de], bearer_methods_supported [header].
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+        note: The provider serves its UCP profile at /.well-known/ucp (no extension) — see the row below. Consumers probing the .json spelling will miss it.
+      - path: /.well-known/ucp
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-ucp.json
+        standard: UCP profile (version 2026-04-08)
+        note: Declares service de.kannkidas.sponsorship (rest, endpoint https://kannkidas.de/api/agent/purchases) and payment handler com.stripe.checkout; endpoints are on the provider's own domain.
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/apis.json
+        status: 404
+      - path: /apis.json
+        status: 404
+      - path: /apis.yml
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: application/json
+        file: ../a2a/kannkidas-de-agent-card.json
+        standard: A2A Agent Card
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/mcp/server-card.json
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-mcp-server-card.json
+        standard: MCP server card
+      - path: /.well-known/agent-skills/index.json
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-agent-skills-index.json
+        standard: Agent Skills discovery 0.2.0 (schemas.agentskills.io)
+      - path: /.well-known/jwks.json
+        status: 200
+        content_type: application/json
+        file: kannkidas-de-jwks.json
+        note: '{"keys": []} — empty set; access tokens are opaque per the OpenAPI, so there is nothing to verify offline.'
+      - path: /robots.txt
+        status: 200
+        content_type: text/plain
+        file: kannkidas-de-robots.txt
+        standard: Content-Signal
+        note: 'Allow: / plus "Content-Signal: ai-train=no, search=yes, ai-input=yes" — a machine-readable AI usage preference.'
+      - path: /.well-known/kannkidas-de-negative-control-8c1f2a9e.json
+        status: 404
+        note: Negative control — a path that cannot exist. 404 with the site's HTML error page (14,217 bytes), the same body every miss above returned, so 200s on this host are real documents.
+  - host: www.kannkidas.de
+    role: Redirect host
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 308
+        note: Permanent redirect to https://kannkidas.de/.well-known/agent-card.json; www serves nothing itself.
+      - path: /.well-known/openid-configuration
+        status: 308
+        note: Permanent redirect to the apex document.

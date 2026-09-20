@@ -1,0 +1,65 @@
+generated: '2026-09-19'
+method: derived
+source: >-
+  Derived by aligning the live anonymous tools/list of https://kannkidas.de/api/mcp (2 tools, saved to
+  mcp/kannkidas-de-mcp-tools.json) and the A2A skill in a2a/kannkidas-de-agent-card.json with the 9 operations of
+  openapi/kannkidas-de-openapi.yml (verbatim copy of https://kannkidas.de/openapi.json, version 1.1.0).
+purpose: >-
+  Bind each agent-facing tool to the REST operation that backs it so the tool inherits a real parameter contract,
+  and record which of the three surfaces (REST, MCP, A2A) carries what. Neither MCP nor A2A is a projection of the
+  whole REST contract: MCP carries the two commercial actions, A2A carries the one read, REST carries everything
+  including search, registration and token issuance.
+surfaces:
+  rest_openapi: openapi/kannkidas-de-openapi.yml          # 9 operations, 8 schemas; anonymous fetch
+  mcp: https://kannkidas.de/api/mcp                        # tools/list anonymous 200; checkout tool needs sponsorship:write
+  a2a: https://kannkidas.de/api/a2a                        # JSON-RPC message/send anonymous 200, read-only
+  graphql: null
+crosswalk:
+  - tool: list_sponsor_slots
+    surface: mcp
+    category: availability
+    rest: [listSponsorSlots]
+    binding: rest
+    confidence: high
+    note: Identical payload shape (slots[] of id/status); the MCP outputSchema additionally allows a status of "review" and a sponsor object, which the OpenAPI SlotList omits.
+  - tool: create_sponsor_checkout
+    surface: mcp
+    category: commerce
+    rest: [createSponsorPurchase]
+    binding: rest
+    confidence: high
+    note: >-
+      Same request contract (slot_id + buyer_confirmed const true, schema/agent-purchase.json) and the same
+      Purchase response. The REST operation carries the idempotency key as the required Idempotency-Key header
+      and requires oauth2 sponsorship:write; the MCP tool takes idempotency_key as an input property. Obtaining
+      the token is REST-only: registerAgentClient then issueAgentAccessToken.
+  - tool: list-sponsor-slots
+    surface: a2a
+    category: availability
+    rest: [listSponsorSlots]
+    binding: rest
+    confidence: high
+    note: A2A skill id from the agent card; a live message/send returned an artifact named sponsor-slot-availability with the same slots[] shape.
+mcp_only: []
+a2a_only: []
+rest_only:
+  - capability: content search
+    operations: [searchProductsAndCategories, suggestSearchTerms, getSimilarProducts]
+    note: Anonymous search over the published analyses; exposed to agents via llms.txt and the find-software skill, not as MCP tools.
+  - capability: agent identity
+    operations: [registerAgentClient, issueAgentAccessToken]
+    note: OAuth client registration and token issuance — prerequisites for the MCP checkout tool but not tools themselves.
+  - capability: purchase status
+    operations: [getSponsorPurchase]
+    note: Read a purchase by id (oauth2 sponsorship:read); MCP returns status_url instead of exposing a status tool.
+  - capability: x402 demo
+    operations: [getPaidSponsorBuyerBrief]
+    note: 402-gated testnet buyer brief; explicitly not a sponsoring checkout.
+coverage:
+  mcp_tools_named: 2
+  mcp_tools_bound: 2
+  a2a_skills_named: 1
+  a2a_skills_bound: 1
+  mcp_only: 0
+  rest_operations_total: 9
+  rest_operations_with_tool: 2

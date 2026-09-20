@@ -1,0 +1,74 @@
+generated: '2026-09-19'
+method: probed
+status: published
+source: https://kannkidas.de/.well-known/mcp/server-card.json
+docs: https://kannkidas.de/agents/
+summary: >-
+  Kann KI das? operates ONE remote MCP server, kannkidas-sponsorship, at https://kannkidas.de/api/mcp over
+  Streamable HTTP. An anonymous initialize returned protocolVersion 2025-06-18 and serverInfo
+  {name: kannkidas-sponsorship, version: 1.0.0}; an anonymous tools/list returned two tools with complete
+  inputSchema, outputSchema and annotations (saved verbatim to mcp/kannkidas-de-mcp-tools.json). The server card
+  declares oauth2 authentication with protectedResourceMetadata at /.well-known/oauth-protected-resource; the
+  read tool works without a token, the checkout tool requires the sponsorship:write scope obtained through
+  anonymous client registration (POST /api/agent/register) and client-credentials at /api/oauth/token.
+deployment:
+  mode: remote
+  endpoint: https://kannkidas.de/api/mcp
+  auth: oauth
+  verified: probed
+  note: >-
+    Hosted HTTPS endpoint an MCP client POSTs to directly; no stdio package, no npx/uvx install is published
+    (npm and PyPI searched for "kannkidas" — nothing). auth is oauth per the server card and RFC 9728 metadata;
+    discovery (initialize, tools/list) and list_sponsor_slots are anonymous, create_sponsor_checkout needs a
+    bearer token with sponsorship:write.
+servers:
+  - id: kannkidas-sponsorship
+    name: kannkidas-sponsorship
+    endpoint: https://kannkidas.de/api/mcp
+    transport: streamable-http
+    protocol_revision: '2025-06-18'
+    server_version: 1.0.0
+    auth: oauth2
+    protected_resource_metadata: https://kannkidas.de/.well-known/oauth-protected-resource
+    authorization_server: https://kannkidas.de/.well-known/oauth-authorization-server
+    server_card: https://kannkidas.de/.well-known/mcp/server-card.json
+    directory_listing: https://smithery.ai/servers/mail-9d6t/kannkidas-sponsorship
+    dns_aid: '_index._agents.kannkidas.de TXT "agents=sponsorship:a2a,sponsorship:mcp"'
+    status: live
+    capabilities: {tools: {listChanged: false}}
+    probe_date: '2026-09-19'
+    probes:
+      - method: 'GET /api/mcp'
+        http_status: 200
+        body: '{"name":"kannkidas-sponsorship","protocol":"MCP Streamable HTTP","protocol_version":"2025-06-18","server_card":"...","authentication":"https://kannkidas.de/auth.md"}'
+      - method: 'POST initialize'
+        http_status: 200
+        protocol_version: '2025-06-18'
+      - method: 'POST tools/list'
+        http_status: 200
+        tool_count: 2
+        file: mcp/kannkidas-de-mcp-tools.json
+    tools:
+      - name: list_sponsor_slots
+        title: List sponsor slots
+        description: List current availability. This tool never reserves or purchases a slot.
+        input_schema: {}                       # no parameters (additionalProperties false)
+        output_schema: slots[10] of {id ^P(0[1-9]|10)$, status enum [available, held, sold, review, active], sponsor? {name, line, url}}
+        annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false}
+        auth: none
+        source_operation: openapi/kannkidas-de-openapi.yml#listSponsorSlots
+      - name: create_sponsor_checkout
+        title: Create sponsor checkout
+        description: Create a Stripe hosted checkout only after explicit buyer confirmation of slot, EUR 990 net price and 30-day term.
+        input_schema:
+          slot_id: string ^P(0[1-9]|10)$ (required)
+          idempotency_key: string 8-128 chars (required)
+          buyer_confirmed: boolean const true (required)
+        output_schema: '{purchase_id ^pur_[a-f0-9]{32}$, slot_id, status enum [checkout_created, paid, expired], checkout_url?, status_url, expires_at, amount const 99000, currency const EUR}'
+        annotations: {readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true}
+        auth: oauth2 sponsorship:write
+        source_operation: openapi/kannkidas-de-openapi.yml#createSponsorPurchase
+    notes:
+      - The MCP tool takes idempotency_key in the input object; the REST operation takes it as the Idempotency-Key header. Same semantics per auth.md ("reuse the same Idempotency-Key for retries").
+      - The MCP outputSchema for slot status lists five states (adds "review") where the OpenAPI SlotList enum lists four; the MCP schema is the richer of the two.
+      - AGENTS.md also describes a WebMCP surface in the browser exposing the same two tools on the page; that is a browser-side surface and was not probed.

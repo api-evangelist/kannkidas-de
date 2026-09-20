@@ -1,0 +1,112 @@
+{
+  "x-provenance": {
+    "generated": "2026-09-19",
+    "method": "probed",
+    "note": "Anonymous A2A JSON-RPC message/send exercising the read-only list-sponsor-slots skill, 2026-09-19."
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://kannkidas.de/api/a2a",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "id": "probe-1",
+      "method": "message/send",
+      "params": {
+        "message": {
+          "role": "user",
+          "messageId": "probe-1",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Welche Sponsorplätze sind frei?"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "jsonrpc": "2.0",
+      "id": "probe-1",
+      "result": {
+        "id": "probe-1",
+        "contextId": "probe-1",
+        "status": {
+          "state": "completed"
+        },
+        "artifacts": [
+          {
+            "artifactId": "2d8a6dd7-f8aa-4581-b842-9785a72aced7",
+            "name": "sponsor-slot-availability",
+            "parts": [
+              {
+                "kind": "data",
+                "data": {
+                  "slots": [
+                    {
+                      "id": "P01",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P02",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P03",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P04",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P05",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P06",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P07",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P08",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P09",
+                      "status": "available"
+                    },
+                    {
+                      "id": "P10",
+                      "status": "available"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "history": [
+          {
+            "role": "agent",
+            "messageId": "f365e308-65f6-4510-890b-424221d8f91c",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "Verfügbarkeit wurde geprüft. Für einen Kauf muss der Käufer Platz, 990 EUR netto und 30 Tage ausdrücklich bestätigen. Nutze danach den dokumentierten OAuth- und Stripe-Checkout-Pfad."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: >-
+  Harvest-only pass over artifacts already collected this run (well-known/, conformance/, lifecycle/), live probes of
+  the conventional paths, and the public legal pages https://kannkidas.de/datenschutz/, /impressum/,
+  /nutzungsbedingungen/. Which regimes reach this provider is decided by the Kin Score regime map, not here.
+signals: {}
+notes:
+  - The Datenschutzerklärung (§8) lists GDPR data-subject rights and names processors (AWS EMEA SARL, HitKeep Cloud EU, Stripe) with a stated preference for European processing locations, but publishes no request portal, no dated subprocessor table and no DPA, so no data_subject_request or subprocessors signal is recorded.
+  - robots.txt carries "Content-Signal: ai-train=no, search=yes, ai-input=yes" — an AI usage preference, captured under well-known/ and conformance/ (content-signal); it is not one of the fourteen regulatory signal types.
+  - The privacy page states that "Do Not Track" is respected by the HitKeep analytics endpoint; Global Privacy Control is not mentioned, so global_privacy_control is not set.
+  - No accessibility conformance report, SBOM, transparency report, data-residency page, age-assurance or notice-and-action page was found.
+probes:
+  - {url: https://kannkidas.de/accessibility, status: 404}
+  - {url: https://kannkidas.de/barrierefreiheit, status: 404}
+  - {url: https://kannkidas.de/accessibility/vpat, status: 404}
+  - {url: https://kannkidas.de/legal/subprocessors, status: 404}
+  - {url: https://kannkidas.de/legal/dpa, status: 404}
+  - {url: https://kannkidas.de/auftragsverarbeitung, status: 404}
+  - {url: https://kannkidas.de/privacy/requests, status: 404}
+  - {url: https://kannkidas.de/transparency, status: 404}
+  - {url: https://kannkidas.de/security/sbom, status: 404}
+  - {url: https://kannkidas.de/docs/data-residency, status: 404}
+  - {url: https://kannkidas.de/ai, status: 404}
+  - {url: https://kannkidas.de/ai/transparency, status: 404}
+  - {url: https://kannkidas.de/legal/report-content, status: 404}
+  - {url: https://kannkidas.de/trust, status: 404}
+  - {url: https://kannkidas.de/datenschutz/, status: 200, note: GDPR rights statement and named processors; no request mechanism}
+  - {url: https://kannkidas.de/nutzungsbedingungen/, status: 200, note: sponsoring terms; B2B only (§14 BGB)}

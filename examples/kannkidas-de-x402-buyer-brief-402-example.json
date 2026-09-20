@@ -1,0 +1,30 @@
+{
+  "x-provenance": {
+    "generated": "2026-09-19",
+    "method": "probed",
+    "note": "Real unauthenticated request issued 2026-09-19; response body saved as returned (search hits truncated).",
+    "operationId": "getPaidSponsorBuyerBrief",
+    "openapi": "openapi/kannkidas-de-openapi.yml"
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://kannkidas.de/api/v1"
+  },
+  "response": {
+    "status": 402,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "apigw-requestid": "D-OdCj_SliAEPyQ=",
+      "cache-control": "no-store",
+      "payment-required": "eyJ4NDAyVmVyc2lvbiI6MiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9rYW5ua2lkYXMuZGUvYXBpL3YxIiwiZGVzY3JpcHRpb24iOiJNYWNoaW5lLXJlYWRhYmxlIEthbm4gS0kgZGFzPyBzcG9uc29yIGJ1eWVyIGJyaWVmIGFuZCBsaXZlIHNsb3QgYXZhaWxhYmlsaXR5LiIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MzIiLCJhbW91bnQiOiIxMDAwIiwiYXNzZXQiOiIweDAzNkNiRDUzODQyYzU0MjY2MzRlNzkyOTU0MWVDMjMxOGYzZENGN2UiLCJwYXlUbyI6IjB4N2QzMzZkYjVjOGI0MzFkNTYwMEM1MjY5N0QxMTgwZTAxMTIzOWNFZSIsIm1heFRpbWVvdXRTZWNvbmRzIjozMDAsImV4dHJhIjp7Im5hbWUiOiJVU0RDIiwidmVyc2lvbiI6IjIifX1dfQ==",
+      "vary": "PAYMENT-SIGNATURE",
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+    },
+    "body": {
+      "message": "x402 payment required.",
+      "protocol": "x402",
+      "environment": "Base Sepolia testnet",
+      "sponsorship_checkout": "https://kannkidas.de/api/agent/purchases"
+    }
+  }
+}

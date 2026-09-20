@@ -1,0 +1,50 @@
+generated: '2026-09-19'
+method: derived
+format: json-message-object
+source: >-
+  Derived from the 4xx responses declared in openapi/kannkidas-de-openapi.yml (verbatim copy of
+  https://kannkidas.de/openapi.json, 9 operations) and the live 402 observed on GET /api/v1. The provider publishes
+  no separate error reference; auth.md and AGENTS.md add remediation guidance for the purchase path.
+envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{ "message": string }'
+  schema: '#/components/schemas/Error (required: [message])'
+  note: The 400 on /search declares no body schema; the x402 402 returns {message, protocol, environment, sponsorship_checkout} plus a PAYMENT-REQUIRED header.
+problems:
+  - status: 400
+    title: Invalid search parameters
+    source_operation: openapi/kannkidas-de-openapi.yml#searchProductsAndCategories
+    remediation: q max 160 chars, type in [product, category], page >= 1, perPage 1-60.
+  - status: 400
+    title: Invalid registration
+    source_operation: openapi/kannkidas-de-openapi.yml#registerAgentClient
+    remediation: Body needs name (3-80 chars); scopes must be a unique non-empty subset of [sponsorship:read, sponsorship:write]; no other properties.
+  - status: 401
+    title: Invalid client
+    source_operation: openapi/kannkidas-de-openapi.yml#issueAgentAccessToken
+    remediation: Send client_id/client_secret via HTTP Basic (client_secret_basic) with grant_type=client_credentials; the secret is returned exactly once at registration.
+  - status: 401
+    title: Bearer token missing or invalid
+    source_operation: openapi/kannkidas-de-openapi.yml#createSponsorPurchase
+    remediation: Send a short-lived opaque bearer token carrying sponsorship:write in the Authorization header only; never in a URL (auth.md).
+  - status: 402
+    title: x402 payment required
+    source_operation: openapi/kannkidas-de-openapi.yml#getPaidSponsorBuyerBrief
+    observed: 'HTTP 402, body {"message":"x402 payment required.","protocol":"x402","environment":"Base Sepolia testnet","sponsorship_checkout":"https://kannkidas.de/api/agent/purchases"}, PAYMENT-REQUIRED header (base64 x402 v2 requirements).'
+    remediation: Testnet demo only — pay 1000 base units of USDC on eip155:84532 per the header, or ignore; it is not the sponsoring checkout.
+  - status: 404
+    title: Unknown purchase
+    source_operation: openapi/kannkidas-de-openapi.yml#getSponsorPurchase
+    remediation: purchase_id is the pur_<32 hex> value returned by createSponsorPurchase; only the registering client can read its own purchases (scope description "Read own purchase status").
+  - status: 409
+    title: Slot unavailable
+    source_operation: openapi/kannkidas-de-openapi.yml#createSponsorPurchase
+    remediation: Re-read GET /slots — a visible slot is not a reservation (AGENTS.md); pick a slot whose status is available and confirm it with the buyer again.
+  - status: 400
+    title: Missing buyer confirmation (documented, not in spec)
+    source_operation: openapi/kannkidas-de-openapi.yml#createSponsorPurchase
+    evidence: auth.md — "The server rejects a missing confirmation"; schema/agent-purchase.json requires buyer_confirmed const true. Status code not stated in the docs; recorded as a documented rejection without a declared code.
+undeclared:
+  - 429 is not declared on any operation and no rate-limit headers were observed (see rate-limits/).
+  - No 5xx responses are declared.

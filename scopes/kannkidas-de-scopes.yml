@@ -1,0 +1,39 @@
+generated: '2026-09-19'
+method: searched
+source: openapi/kannkidas-de-openapi.yml
+docs: https://kannkidas.de/auth.md
+discovery:
+  authorization_server_metadata: https://kannkidas.de/.well-known/oauth-authorization-server
+  protected_resource_metadata: https://kannkidas.de/.well-known/oauth-protected-resource
+  scopes_supported: [sponsorship:read, sponsorship:write]
+  note: Both served documents list exactly the two scopes the OpenAPI declares; the derived baseline and the docs agree.
+schemes:
+- name: oauth2
+  source: openapi/kannkidas-de-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://kannkidas.de/api/oauth/token
+    registrationUrl: https://kannkidas.de/api/agent/register
+    token_endpoint_auth_method: client_secret_basic
+    default_scope: sponsorship:read
+scopes:
+- scope: sponsorship:read
+  description: Read own purchase status
+  flows:
+  - clientCredentials
+  granted_by_default: true
+  operations: [getSponsorPurchase]
+  docs_note: 'auth.md: registration grants only sponsorship:read by default; a token request without a scope parameter also defaults to read-only.'
+  sources:
+  - openapi/kannkidas-de-openapi.yml
+  - https://kannkidas.de/auth.md
+- scope: sponsorship:write
+  description: Create a confirmed checkout
+  flows:
+  - clientCredentials
+  granted_by_default: false
+  operations: [createSponsorPurchase]
+  docs_note: 'auth.md: request scopes ["sponsorship:read","sponsorship:write"] explicitly at registration only when the buyer intends to create a checkout; AGENTS.md: use the smallest required scope.'
+  sources:
+  - openapi/kannkidas-de-openapi.yml
+  - https://kannkidas.de/auth.md

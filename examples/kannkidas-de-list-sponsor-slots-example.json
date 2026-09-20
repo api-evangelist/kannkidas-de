@@ -1,0 +1,66 @@
+{
+  "x-provenance": {
+    "generated": "2026-09-19",
+    "method": "probed",
+    "note": "Real unauthenticated request issued 2026-09-19; response body saved as returned (search hits truncated).",
+    "operationId": "listSponsorSlots",
+    "openapi": "openapi/kannkidas-de-openapi.yml"
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://kannkidas.de/api/slots"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "apigw-requestid": "D-Ocdi1uliAEPaw=",
+      "cache-control": "public, max-age=15, s-maxage=15",
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+    },
+    "body": {
+      "slots": [
+        {
+          "id": "P01",
+          "status": "available"
+        },
+        {
+          "id": "P02",
+          "status": "available"
+        },
+        {
+          "id": "P03",
+          "status": "available"
+        },
+        {
+          "id": "P04",
+          "status": "available"
+        },
+        {
+          "id": "P05",
+          "status": "available"
+        },
+        {
+          "id": "P06",
+          "status": "available"
+        },
+        {
+          "id": "P07",
+          "status": "available"
+        },
+        {
+          "id": "P08",
+          "status": "available"
+        },
+        {
+          "id": "P09",
+          "status": "available"
+        },
+        {
+          "id": "P10",
+          "status": "available"
+        }
+      ]
+    }
+  }
+}

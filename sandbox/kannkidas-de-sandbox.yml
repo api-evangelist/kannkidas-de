@@ -1,0 +1,34 @@
+generated: '2026-09-19'
+method: searched
+source: https://kannkidas.de/AGENTS.md
+description: >-
+  Kann KI das? publishes no test mode for the Stripe sponsoring checkout — there are no test keys, no test slots
+  and no fixture tooling; every createSponsorPurchase is a live EUR checkout. The only published test surface is the
+  x402 v2 conformance endpoint GET /api/v1, which AGENTS.md and the /agents/ page describe as a clearly separated
+  testnet demo ("Abgegrenzter 0,001-USD-Testnet-Kauf eines Buyer Briefs; er reserviert keinen Sponsorplatz"). Values
+  below are verbatim from the live 402 PAYMENT-REQUIRED header decoded on 2026-09-19.
+docs:
+  - https://kannkidas.de/AGENTS.md
+  - https://kannkidas.de/agents/
+  - https://kannkidas.de/openapi.json
+modes:
+  - name: live
+    surfaces: [createSponsorPurchase, create_sponsor_checkout (MCP)]
+    notes: Real 990 EUR Stripe Checkout; AGENTS.md guardrails require explicit buyer confirmation before any call. No sandbox counterpart exists.
+  - name: testnet (x402 demo)
+    surfaces: [getPaidSponsorBuyerBrief]
+    endpoint: https://kannkidas.de/api/v1
+    protocol: x402 v2
+    network: eip155:84532 (Base Sepolia testnet)
+    asset: '0x036CbD53842c5426634e7929541eC2318f3dCF7e (USDC, version 2)'
+    amount: '1000 base units (0.001 USDC)'
+    pay_to: '0x7d336db5c8b431d5600C52697D1180e011239cEe'
+    max_timeout_seconds: 300
+    response_header: PAYMENT-RESPONSE (base64) on 200; PAYMENT-REQUIRED (base64) on 402; Vary PAYMENT-SIGNATURE
+    notes: Reserves no slot, confirms no booking; returns a buyer brief with live slot availability.
+read_only_rehearsal:
+  - GET /api/slots (anonymous, 15 s cache) — the documented pre-purchase check.
+  - MCP list_sponsor_slots / A2A list-sponsor-slots — same read.
+test_values: []
+test_clocks: false
+fixtures: false

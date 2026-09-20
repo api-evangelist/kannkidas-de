@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kannkidas.de/schema/agent-purchase.json",
+  "title": "Sponsor purchase request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slot_id",
+    "buyer_confirmed"
+  ],
+  "properties": {
+    "slot_id": {
+      "type": "string",
+      "pattern": "^P(?:0[1-9]|10)$"
+    },
+    "buyer_confirmed": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

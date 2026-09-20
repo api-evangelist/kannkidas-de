@@ -1,0 +1,127 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://kannkidas.de/auth.md, https://kannkidas.de/AGENTS.md, https://kannkidas.de/pricing.md,
+  https://kannkidas.de/nutzungsbedingungen/, the OpenAPI at https://kannkidas.de/openapi.json and live
+  unauthenticated responses from /api/slots, /api/search and /api/v1 (2026-09-19).
+description: >-
+  Cross-cutting request/response semantics of the Kann KI das? API: an anonymous read surface (search, slots),
+  an OAuth 2.0 client-credentials write surface with exactly one commercial write (createSponsorPurchase), an
+  explicit-consent contract (buyer_confirmed const true), a required Idempotency-Key on that write, and payment
+  delegated to Stripe hosted Checkout so the API never sees card data.
+
+base_url: https://kannkidas.de/api
+api_style: REST over HTTPS, JSON responses; JSON request bodies except the OAuth token endpoint (form-encoded)
+
+authentication:
+  scheme: >-
+    Anonymous for search and slots. OAuth 2.0 client_credentials for purchases: register a client anonymously
+    (POST /agent/register, JSON {name, scopes?}), receive a client secret once, exchange it at POST /oauth/token with
+    HTTP Basic (client_secret_basic) for a short-lived opaque bearer token; scope defaults to sponsorship:read.
+  scopes: [sponsorship:read, sponsorship:write]
+  least_privilege: auth.md and AGENTS.md instruct requesting sponsorship:write only for a confirmed purchase.
+  docs: https://kannkidas.de/auth.md
+  discovery: [https://kannkidas.de/.well-known/oauth-authorization-server, https://kannkidas.de/.well-known/oauth-protected-resource]
+  detail: authentication/kannkidas-de-authentication.yml
+  scopes_detail: scopes/kannkidas-de-scopes.yml
+
+idempotency:
+  supported: true
+  coverage: partial
+  scope: [createSponsorPurchase]
+  mechanism: Idempotency-Key request header, required, 8-128 characters (OpenAPI parameter); the MCP tool create_sponsor_checkout takes the same value as input property idempotency_key.
+  applies_to: >-
+    The one commercial write, POST /agent/purchases. The other two POSTs — registerAgentClient (RFC 7591-style
+    registration) and issueAgentAccessToken (token issuance) — carry no idempotency key.
+  key_format: Client-generated stable value per buyer + slot request ("Stable retry key for this exact buyer and slot request; reuse it for safe retries").
+  retention: Not stated.
+  conflict_behavior: Not stated; the 409 declared on the operation is "Slot unavailable", not a key conflict.
+  docs: https://kannkidas.de/auth.md
+  mutating_operations_total: 3
+  mutating_operations_with_key: 1
+
+consent_gate:
+  supported: true
+  mechanism: buyer_confirmed boolean const true in the request body (schema/agent-purchase.json, additionalProperties false); the server rejects a missing confirmation.
+  required_disclosure_before_write: [selected slot, 990 EUR net one-time price, 30-day term, sponsorship conditions]
+  docs: https://kannkidas.de/AGENTS.md
+
+dry_run:
+  supported: false
+  note: No test-mode flag or preview call for the checkout; GET /slots is the only rehearsal (read) step. The x402 /v1 endpoint is a separate testnet demo, not a dry run of the checkout.
+
+reversibility:
+  grade: none
+  api_reversal_operations: []
+  note: >-
+    The contract exposes no cancel, void, refund or delete operation for a purchase; the only lifecycle transitions
+    are server-driven (checkout_created -> paid via Stripe, or -> expired when the hold at expires_at lapses). Reversal
+    exists only out-of-band in the terms: §4 — if no approvable creative is delivered within 14 days of payment
+    confirmation the operator may withdraw and refund the price minus proven costs; §7 — on a justified rejection
+    with no reasonable fix the paid amount is refunded to the original payment method. No automatic renewal (§3).
+    These are the operator's contractual options, not a buyer-invocable window, so they are recorded here and not
+    graded as a reversal path.
+  windows_stated_in_docs:
+    - {surface: createSponsorPurchase, event: checkout hold expiry, window: 'until Purchase.expires_at (value returned per purchase; duration not stated)', source: 'https://kannkidas.de/openapi.json'}
+    - {surface: createSponsorPurchase, event: operator withdrawal + refund, window: '14 days after payment confirmation without an approvable creative', source: 'https://kannkidas.de/nutzungsbedingungen/ §4'}
+
+pagination:
+  style: offset
+  request_params:
+    page: integer >= 1
+    perPage: integer 1-60 (observed default 24)
+  response_fields:
+    found: total hits
+    page: current page
+    perPage: page size
+    hits: array
+    facets: object
+  applies_to: [searchProductsAndCategories]
+  docs: https://kannkidas.de/openapi.json
+
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+
+request_tracing:
+  request_id_header: apigw-requestid
+  description: Observed on every /api response (AWS API Gateway behind CloudFront); not documented by the provider.
+
+caching:
+  observed:
+    - {path: /api/slots, cache_control: 'public, max-age=15, s-maxage=15'}
+    - {path: /api/search, cache_control: no-store}
+    - {path: /api/v1, cache_control: no-store}
+
+versioning:
+  scheme: none-in-request
+  current: 1.1.0 (info.version)
+  detail: lifecycle/kannkidas-de-lifecycle.yml
+
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{ "message": string }'
+  detail: errors/kannkidas-de-problem-types.yml
+
+rate_limits:
+  documented: false
+  signal_status: null
+  headers_observed: []
+  detail: rate-limits/kannkidas-de-rate-limits.yml
+
+payments:
+  handler: Stripe hosted Checkout (x-payment-info intent session, amount 99000 EUR cents)
+  rule: Card, bank, tax and invoice data go only to the Stripe page; the API never receives them (AGENTS.md, auth.md).
+  claim_paid_only_when: Purchase.status == paid
+
+other_conventions:
+  - name: Markdown twins
+    detail: Every indexable HTML page is also served as text/markdown via Accept negotiation or a .md suffix (verified on /produkte/asana/).
+  - name: Amounts
+    detail: Integer euro cents (amount const 99000); currency const EUR.
+  - name: Identifiers
+    detail: 'Slots P01-P10 (^P(?:0[1-9]|10)$); purchases pur_<32 hex>; products lowercase slug ^[a-z0-9][a-z0-9-]*$.'
+  - name: Browser and DNS discovery
+    detail: WebMCP exposes the two tools in-page; DNS-AID TXT at _index._agents.kannkidas.de (AGENTS.md).

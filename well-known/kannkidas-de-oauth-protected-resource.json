@@ -1,0 +1,14 @@
+{
+  "resource": "https://kannkidas.de/api",
+  "authorization_servers": [
+    "https://kannkidas.de"
+  ],
+  "scopes_supported": [
+    "sponsorship:read",
+    "sponsorship:write"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "resource_documentation": "https://kannkidas.de/auth.md"
+}

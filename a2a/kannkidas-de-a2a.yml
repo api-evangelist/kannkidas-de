@@ -1,0 +1,99 @@
+generated: '2026-09-19'
+method: probed            # ONLY ever "probed" — never generated/derived
+source: https://kannkidas.de/.well-known/agent-card.json
+card:
+  file: a2a/kannkidas-de-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: kannkidas.de
+  note: >-
+    Served from the apex domain, which is also the OpenAPI servers[] host (https://kannkidas.de/api),
+    the MCP host and the OAuth issuer, so ownership is not in question. www.kannkidas.de answers 308 to
+    the apex for every path. The legacy /.well-known/agent.json path returns a real 404 (HTML error page,
+    14,217 bytes) and a negative-control path under /.well-known/ also 404s, so the host is not a
+    catch-all and the 200 is a genuine document. The provider's own AGENTS.md lists this exact URL as
+    "A2A Agent Card" and DNS-AID publishes "agents=sponsorship:a2a,sponsorship:mcp" at
+    _index._agents.kannkidas.de.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://kannkidas.de/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  body_bytes: 1051
+  body_parses_as: JSON object with AgentCard shape (name, url, version, protocolVersion, capabilities, skills all present)
+  corroborating_probes:
+    - url: https://kannkidas.de/.well-known/agent.json
+      http_status: 404
+    - url: https://www.kannkidas.de/.well-known/agent-card.json
+      http_status: 308
+      note: Permanent redirect to the apex card.
+    - url: https://kannkidas.de/.well-known/kannkidas-de-negative-control-8c1f2a9e.json
+      http_status: 404
+      note: Negative control — the host does not echo arbitrary /.well-known/ paths.
+    - url: https://kannkidas.de/api/a2a
+      http_status: 200
+      note: >-
+        GET returns a small JSON descriptor ({"name":"Kann KI das? Sponsoring Agent","protocol":"A2A JSON-RPC 2.0",
+        "mode":"read-only", ...}) pointing back at the card and the OpenAPI. A POST message/send with a plain-text
+        request returned a completed task carrying a sponsor-slot-availability data artifact with all ten slots —
+        the declared skill is live and anonymous (see examples/kannkidas-de-a2a-message-send-example.json).
+    - url: _index._agents.kannkidas.de (DNS TXT)
+      http_status: null
+      note: 'TXT "agents=sponsorship:a2a,sponsorship:mcp" — DNS-AID index record; _a2a._agents and _mcp._agents returned no TXT at probe time.'
+agent_card:
+  name: Kann KI das? Sponsoring Agent
+  description: Prüft read-only die Live-Verfügbarkeit gekennzeichneter Sponsorplätze.
+  version: 1.0.0
+  url: https://kannkidas.de/api/a2a
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC
+  additional_interfaces:
+    - {url: https://kannkidas.de/api/a2a, transport: JSONRPC}
+  supported_interfaces:
+    - {url: https://kannkidas.de/api/a2a, protocolBinding: JSONRPC, protocolVersion: '0.3'}
+  capabilities: {streaming: false, pushNotifications: false, extensions: []}
+  default_input_modes: [application/json, text/plain]
+  default_output_modes: [application/json, text/plain]
+  security_schemes: null
+  skill_count: 1
+  skills:
+    - id: list-sponsor-slots
+      name: Sponsorplätze prüfen
+      description: Liefert den verifizierten Live-Status aller zehn festen Plätze.
+      tags: [sponsoring, availability]
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  optional_fields:
+    preferred_transport: true
+    default_input_modes: true
+    default_output_modes: true
+  grade_basis: >-
+    capabilities is an object with streaming, pushNotifications and extensions; protocolVersion "0.3.0" is present
+    at the top level; skills is a one-element array with id, name, description and tags. All three optional
+    discriminators (preferredTransport, defaultInputModes, defaultOutputModes) are declared. The card carries BOTH the
+    0.3-era additionalInterfaces[] and the 1.0-era supportedInterfaces[] (with protocolBinding + protocolVersion), so
+    readers written against either shape resolve the same JSONRPC endpoint.
+  deviations:
+    - field: securitySchemes / security
+      observed: absent
+      note: The agent is anonymous and read-only, so no scheme is required; the card simply does not state that.
+    - field: provider / documentationUrl
+      observed: absent
+      note: No provider.organization or documentationUrl; the human docs live at https://kannkidas.de/agents/ and are not linked from the card.
+    - field: skills[0].examples / inputModes / outputModes
+      observed: absent
+      note: The skill inherits the default modes; no example prompts are published.
+surface_relationship:
+  note: >-
+    The A2A agent is the narrowest of three agent surfaces on the same host and is deliberately read-only. MCP
+    (https://kannkidas.de/api/mcp) exposes the same slot read plus create_sponsor_checkout behind OAuth; the REST
+    OpenAPI (https://kannkidas.de/api) additionally exposes product search, agent registration, token issuance and
+    purchase status. The A2A skill list-sponsor-slots is backed by the REST operation listSponsorSlots.

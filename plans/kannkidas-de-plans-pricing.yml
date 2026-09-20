@@ -1,0 +1,75 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Kann KI das?
+providerId: kannkidas-de
+created: '2026-09-19'
+modified: '2026-09-19'
+generated: '2026-09-19'
+method: searched
+source: https://kannkidas.de/pricing.md
+sources:
+  - https://kannkidas.de/pricing.md
+  - https://kannkidas.de/sponsoring/
+  - https://kannkidas.de/nutzungsbedingungen/
+  - https://kannkidas.de/openapi.json
+tags:
+  - Sponsoring
+  - Advertising
+description: >-
+  The API itself is free and anonymous for search and slot availability. The only priced item is a fixed sponsor
+  placement, published machine-readably at /pricing.md and mirrored in the OpenAPI (x-payment-info amount 99000
+  EUR cents): 990 EUR net, one-time, 30 days, no rotation, no auto-renewal, no reach guarantee, no editorial
+  influence, B2B buyers only (terms §1). A separate x402 v2 endpoint sells a buyer brief for 0.001 USDC on the Base
+  Sepolia testnet as a protocol demo — not a commercial plan.
+plan_count: 2
+plans:
+  - id: kannkidas-de-api-free
+    name: API access (search, slots, agent registration)
+    type: free
+    price: 0
+    currency: EUR
+    billing_period: none
+    description: Anonymous search, suggestions, similar products and live slot status; anonymous OAuth client registration and token issuance. No published quota.
+    entries: []
+    elements:
+      - name: GET /search, /search/suggestions, /search/similar
+      - name: GET /slots
+      - name: POST /agent/register, POST /oauth/token
+      - name: MCP tools/list and list_sponsor_slots; A2A list-sponsor-slots
+  - id: kannkidas-de-sponsor-slot
+    name: Fester Sponsorplatz (fixed sponsor placement)
+    type: one-time
+    price: 990
+    currency: EUR
+    price_note: net (zzgl. gesetzlicher Umsatzsteuer); Stripe Checkout applies automatic tax calculation and issues the invoice
+    billing_period: one-time
+    term: 30 consecutive calendar days from editorial approval and publication
+    description: One of ten fixed positions P01-P10; the booked slot stays fixed for the term (no rotation); creative = display name, short line, HTTPS target, optional logo; publication only after manual creative review.
+    entries:
+      - label: Sponsor placement
+        name: sponsor_slot
+        type: one-time
+        metric: placement
+        limit: 1
+        timeFrame: 30 days
+        unit: 1
+        price: 990 EUR net
+        userMultiplied: false
+    elements:
+      - name: Positions P01-P10 (P01-P02 Leitplatz, P03-P06 Produktübersicht, P07-P10 Entscheidungsseite)
+      - name: Purchased via POST /api/agent/purchases (oauth2 sponsorship:write, Idempotency-Key, buyer_confirmed true) or the MCP tool create_sponsor_checkout
+      - name: Payment on Stripe hosted Checkout; status readable at status_url / GET /agent/purchases/{purchase_id}
+    exclusions:
+      - No guaranteed impressions, clicks or conversions
+      - No influence on analyses, scores, rankings or comparisons
+      - No publication before manual creative review
+      - No automatic renewal
+  - id: kannkidas-de-x402-buyer-brief-testnet
+    name: x402 buyer brief (testnet demo)
+    type: usage-based
+    commercial: false
+    price: '1000 base units (0.001) USDC'
+    currency: USDC
+    network: eip155:84532 (Base Sepolia testnet)
+    description: GET /api/v1 answers 402 with x402 v2 requirements; paying returns a buyer brief with live slot availability. AGENTS.md states it reserves no slot and confirms no commercial booking. Counted in plan_count as a priced surface but flagged non-commercial.

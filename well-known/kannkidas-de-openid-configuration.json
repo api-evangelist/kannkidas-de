@@ -1,0 +1,32 @@
+{
+  "issuer": "https://kannkidas.de",
+  "authorization_endpoint": "https://kannkidas.de/api/oauth/authorize",
+  "token_endpoint": "https://kannkidas.de/api/oauth/token",
+  "registration_endpoint": "https://kannkidas.de/api/agent/register",
+  "jwks_uri": "https://kannkidas.de/.well-known/jwks.json",
+  "response_types_supported": [
+    "none"
+  ],
+  "grant_types_supported": [
+    "client_credentials"
+  ],
+  "token_endpoint_auth_methods_supported": [
+    "client_secret_basic"
+  ],
+  "scopes_supported": [
+    "sponsorship:read",
+    "sponsorship:write"
+  ],
+  "agent_auth": {
+    "skill": "https://kannkidas.de/auth.md",
+    "register_uri": "https://kannkidas.de/api/agent/register",
+    "identity_types_supported": [
+      "anonymous"
+    ],
+    "anonymous": {
+      "credential_types_supported": [
+        "oauth_client_credentials"
+      ]
+    }
+  }
+}

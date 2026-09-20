@@ -1,0 +1,38 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://kannkidas.de/schema/product.json",
+      "service-doc": [
+        {
+          "href": "https://kannkidas.de/methodik/"
+        }
+      ],
+      "type": [
+        {
+          "href": "https://schema.org/TechArticle"
+        }
+      ]
+    },
+    {
+      "anchor": "https://kannkidas.de/schema/page.json",
+      "service-doc": [
+        {
+          "href": "https://kannkidas.de/methodik/"
+        }
+      ],
+      "type": [
+        {
+          "href": "https://schema.org/WebSite"
+        }
+      ]
+    },
+    {
+      "anchor": "https://kannkidas.de/schemamap.xml",
+      "service-doc": [
+        {
+          "href": "https://kannkidas.de/methodik/"
+        }
+      ]
+    }
+  ]
+}

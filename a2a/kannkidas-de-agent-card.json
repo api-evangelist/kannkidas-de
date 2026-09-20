@@ -1,0 +1,45 @@
+{
+  "protocolVersion": "0.3.0",
+  "name": "Kann KI das? Sponsoring Agent",
+  "description": "Prüft read-only die Live-Verfügbarkeit gekennzeichneter Sponsorplätze.",
+  "version": "1.0.0",
+  "url": "https://kannkidas.de/api/a2a",
+  "preferredTransport": "JSONRPC",
+  "additionalInterfaces": [
+    {
+      "url": "https://kannkidas.de/api/a2a",
+      "transport": "JSONRPC"
+    }
+  ],
+  "supportedInterfaces": [
+    {
+      "url": "https://kannkidas.de/api/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "0.3"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extensions": []
+  },
+  "defaultInputModes": [
+    "application/json",
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "application/json",
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "list-sponsor-slots",
+      "name": "Sponsorplätze prüfen",
+      "description": "Liefert den verifizierten Live-Status aller zehn festen Plätze.",
+      "tags": [
+        "sponsoring",
+        "availability"
+      ]
+    }
+  ]
+}

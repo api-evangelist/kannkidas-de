@@ -1,0 +1,30 @@
+{
+  "ucp": {
+    "version": "2026-04-08",
+    "services": {
+      "de.kannkidas.sponsorship": [
+        {
+          "version": "1.0.0",
+          "transport": "rest",
+          "endpoint": "https://kannkidas.de/api/agent/purchases"
+        }
+      ]
+    },
+    "capabilities": {
+      "de.kannkidas.sponsorship.checkout": [
+        {
+          "version": "1.0.0",
+          "spec": "https://kannkidas.de/openapi.json",
+          "schema": "https://kannkidas.de/schema/agent-purchase.json"
+        }
+      ]
+    }
+  },
+  "payment_handlers": [
+    {
+      "id": "com.stripe.checkout",
+      "name": "Stripe Hosted Checkout",
+      "method": "stripe"
+    }
+  ]
+}
