@@ -27,6 +27,20 @@ tags:
 - Software Reviews
 - Build vs Buy
 - Search
+- agent-native
+- MCP
+- A2A
+- Authentication
+- x402
+- Stripe Checkout
+- Germany
+tags_raw:
+- Company
+- Sponsoring
+- Advertising
+- Software Reviews
+- Build vs Buy
+- Search
 - Agent-native
 - MCP
 - A2A
@@ -44,6 +58,12 @@ apis:
   humanURL: https://kannkidas.de/agents/
   baseURL: https://kannkidas.de/api
   tags:
+  - Search
+  - Sponsoring
+  - Checkout
+  - Authentication
+  - x402
+  tags_raw:
   - Search
   - Sponsoring
   - Checkout
@@ -105,6 +125,10 @@ apis:
   baseURL: https://kannkidas.de/api/mcp
   tags:
   - MCP
+  - agent-native
+  - Sponsoring
+  tags_raw:
+  - MCP
   - Agent-native
   - Sponsoring
   properties:
@@ -130,6 +154,10 @@ apis:
   humanURL: https://kannkidas.de/agents/
   baseURL: https://kannkidas.de/api/a2a
   tags:
+  - A2A
+  - agent-native
+  - Sponsoring
+  tags_raw:
   - A2A
   - Agent-native
   - Sponsoring
