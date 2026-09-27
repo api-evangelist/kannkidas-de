@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Kannkidas De OAuth API
+  version: 1.1.0
+  description: 'Operations tagged Oauth across 2 of this provider''s published API definitions: kannkidas-de-openapi.json, kannkidas-de-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://kannkidas.de/api
+tags:
+- name: OAuth
+paths:
+  /oauth/token:
+    post:
+      operationId: issueAgentAccessToken
+      summary: Issue an opaque access token using client credentials
+      security:
+      - clientBasic: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - grant_type
+              properties:
+                grant_type:
+                  const: client_credentials
+                scope:
+                  type: string
+                  default: sponsorship:read
+      responses:
+        '200':
+          description: Short-lived bearer token
+        '401':
+          description: Invalid client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+      - OAuth
+    servers:
+    - url: https://kannkidas.de/api
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    clientBasic:
+      type: http
+      scheme: basic
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://kannkidas.de/api/oauth/token
+          scopes:
+            sponsorship:read: Read own purchase status
+            sponsorship:write: Create a confirmed checkout
+x-refined-from:
+- kannkidas-de-openapi.json
+- kannkidas-de-openapi.yml

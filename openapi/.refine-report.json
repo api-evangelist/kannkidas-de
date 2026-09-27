@@ -1,0 +1,59 @@
+{
+  "provider": "kannkidas-de",
+  "sources": [
+    "_original/kannkidas-de-openapi.json",
+    "kannkidas-de-openapi.yml"
+  ],
+  "outputs": [
+    "kannkidas-de-agent-api-openapi.yml",
+    "kannkidas-de-kann-ki-das-api-api-openapi.yml",
+    "kannkidas-de-oauth-api-openapi.yml",
+    "kannkidas-de-search-api-openapi.yml",
+    "kannkidas-de-slots-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/kannkidas-de-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "kannkidas-de-openapi.json: upgraded openapi 3.1.1 -> OpenAPI 3.2.0",
+    "kannkidas-de-openapi.json: tagged paths GET /search -> Search",
+    "kannkidas-de-openapi.json: tagged paths GET /search/suggestions -> Search",
+    "kannkidas-de-openapi.json: tagged paths GET /search/similar -> Search",
+    "kannkidas-de-openapi.json: tagged paths GET /slots -> Slots",
+    "kannkidas-de-openapi.json: tagged paths GET /v1 -> Kann KI Das? API",
+    "kannkidas-de-openapi.json: tagged paths POST /agent/register -> Agent",
+    "kannkidas-de-openapi.json: tagged paths POST /oauth/token -> Oauth",
+    "kannkidas-de-openapi.json: tagged paths POST /agent/purchases -> Agent",
+    "kannkidas-de-openapi.json: tagged paths GET /agent/purchases/{purchase_id} -> Agent",
+    "kannkidas-de-openapi.json: declared missing tag: Agent",
+    "kannkidas-de-openapi.json: declared missing tag: Kann KI Das? API",
+    "kannkidas-de-openapi.json: declared missing tag: Oauth",
+    "kannkidas-de-openapi.json: declared missing tag: Search",
+    "kannkidas-de-openapi.json: declared missing tag: Slots",
+    "kannkidas-de-openapi.yml: upgraded openapi 3.1.1 -> OpenAPI 3.2.0",
+    "kannkidas-de-openapi.yml: tagged paths GET /search -> Search",
+    "kannkidas-de-openapi.yml: tagged paths GET /search/suggestions -> Search",
+    "kannkidas-de-openapi.yml: tagged paths GET /search/similar -> Search",
+    "kannkidas-de-openapi.yml: tagged paths GET /slots -> Slots",
+    "kannkidas-de-openapi.yml: tagged paths GET /v1 -> Kann KI Das? API",
+    "kannkidas-de-openapi.yml: tagged paths POST /agent/register -> Agent",
+    "kannkidas-de-openapi.yml: tagged paths POST /oauth/token -> Oauth",
+    "kannkidas-de-openapi.yml: tagged paths POST /agent/purchases -> Agent",
+    "kannkidas-de-openapi.yml: tagged paths GET /agent/purchases/{purchase_id} -> Agent",
+    "kannkidas-de-openapi.yml: declared missing tag: Agent",
+    "kannkidas-de-openapi.yml: declared missing tag: Kann KI Das? API",
+    "kannkidas-de-openapi.yml: declared missing tag: Oauth",
+    "kannkidas-de-openapi.yml: declared missing tag: Search",
+    "kannkidas-de-openapi.yml: declared missing tag: Slots",
+    "tag 'Agent' spans 2 source specs (kannkidas-de-openapi.json, kannkidas-de-openapi.yml): per-path servers applied",
+    "tag 'Kann KI Das? API' spans 2 source specs (kannkidas-de-openapi.json, kannkidas-de-openapi.yml): per-path servers applied",
+    "tag 'Oauth' spans 2 source specs (kannkidas-de-openapi.json, kannkidas-de-openapi.yml): per-path servers applied",
+    "tag 'Search' spans 2 source specs (kannkidas-de-openapi.json, kannkidas-de-openapi.yml): per-path servers applied",
+    "tag 'Slots' spans 2 source specs (kannkidas-de-openapi.json, kannkidas-de-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+5 apis, 7 total)"
+  ],
+  "skipped": []
+}

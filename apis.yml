@@ -27,7 +27,7 @@ tags:
 - Software Reviews
 - Build vs Buy
 - Search
-- agent-native
+- Agent-Native
 - MCP
 - A2A
 - Authentication
@@ -48,33 +48,79 @@ tags_raw:
 - x402
 - Stripe Checkout
 - Germany
+- agent-native
 apis:
-- aid: kannkidas-de:kann-ki-das-api
-  name: Kann KI das? API
-  description: Faceted product and category search over the published build-or-buy analyses, suggestions and nearest-neighbour
-    products, live availability of the ten fixed sponsor slots, anonymous OAuth 2.0 client registration and client-credentials
-    token issuance, and a buyer-confirmed, idempotent Stripe hosted Checkout for a sponsor placement, plus an x402
-    v2 testnet demo endpoint. Nine operations, OpenAPI 3.1.1, served from https://kannkidas.de/api.
+- aid: kannkidas-de:kann-ki-das-sponsorship-mcp-server
+  name: Kann KI das? Sponsorship MCP Server
+  description: >-
+    Remote Model Context Protocol server (Streamable HTTP, protocol revision 2025-06-18) at https://kannkidas.de/api/mcp
+    named kannkidas-sponsorship. Anonymous initialize and tools/list succeed and return two tools with
+    full input and output schemas: list_sponsor_slots (read-only) and create_sponsor_checkout (OAuth sponsorship:write,
+    explicit buyer confirmation, idempotency key). A server card is published at /.well-known/mcp/server-card.json
+    and the server is listed on Smithery.
+  humanURL: https://kannkidas.de/agents/
+  baseURL: https://kannkidas.de/api/mcp
+  tags:
+  - MCP
+  - Agent-Native
+  - Sponsoring
+  tags_raw:
+  - MCP
+  - Agent-native
+  - Sponsoring
+  - agent-native
+  properties:
+  - type: MCPServer
+    url: mcp/kannkidas-de-mcp.yml
+  - type: MCPServer
+    url: https://kannkidas.de/api/mcp
+  - type: ToolCrosswalk
+    url: mcp/kannkidas-de-tool-crosswalk.yml
+  - type: Documentation
+    url: https://kannkidas.de/agents/
+  - type: Authentication
+    url: https://kannkidas.de/auth.md
+  - type: Examples
+    url: examples/kannkidas-de-mcp-tools-list-example.json
+  image: https://kannkidas.de/og-default.jpg
+- aid: kannkidas-de:kann-ki-das-sponsoring-agent-a2a
+  name: Kann KI das? Sponsoring Agent (A2A)
+  description: >-
+    Read-only Agent2Agent JSON-RPC endpoint at https://kannkidas.de/api/a2a described by the agent card
+    at /.well-known/agent-card.json (A2A protocolVersion 0.3.0). One skill, list-sponsor-slots, returns
+    the verified live status of the ten fixed sponsor slots as a data artifact; the agent never reserves
+    or purchases and points buyers to the documented OAuth and Stripe checkout path.
+  humanURL: https://kannkidas.de/agents/
+  baseURL: https://kannkidas.de/api/a2a
+  tags:
+  - A2A
+  - Agent-Native
+  - Sponsoring
+  tags_raw:
+  - A2A
+  - Agent-native
+  - Sponsoring
+  - agent-native
+  properties:
+  - type: AgentCard
+    url: a2a/kannkidas-de-a2a.yml
+  - type: AgentCard
+    url: https://kannkidas.de/.well-known/agent-card.json
+  - type: Documentation
+    url: https://kannkidas.de/agents/
+  - type: Examples
+    url: examples/kannkidas-de-a2a-message-send-example.json
+  image: https://kannkidas.de/og-default.jpg
+- aid: kannkidas-de:kannkidas-de-agent-api
+  name: Kann KI das? Sponsoring Agent Agent API
+  description: The Agent API from Kann KI das? Sponsoring Agent — 3 operation(s) for agent.
   humanURL: https://kannkidas.de/agents/
   baseURL: https://kannkidas.de/api
   tags:
-  - Search
-  - Sponsoring
-  - Checkout
-  - Authentication
-  - x402
-  tags_raw:
-  - Search
-  - Sponsoring
-  - Checkout
-  - OAuth
-  - x402
+  - Agent
   properties:
   - type: OpenAPI
-    url: openapi/kannkidas-de-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://kannkidas.de/openapi.json
+    url: openapi/kannkidas-de-agent-api-openapi.yml
   - type: Documentation
     url: https://kannkidas.de/agents/
   - type: APIReference
@@ -93,8 +139,6 @@ apis:
     url: examples/kannkidas-de-search-products-example.json
   - type: Examples
     url: examples/kannkidas-de-x402-buyer-brief-402-example.json
-  - type: Overlay
-    url: overlays/kannkidas-de-openapi-overlay.yaml
   - type: Conventions
     url: conventions/kannkidas-de-conventions.yml
   - type: Idempotency
@@ -113,64 +157,191 @@ apis:
     url: lifecycle/kannkidas-de-lifecycle.yml
   - type: Conformance
     url: conformance/kannkidas-de-conformance.yml
-  image: https://kannkidas.de/og-default.jpg
-- aid: kannkidas-de:kann-ki-das-sponsorship-mcp-server
-  name: Kann KI das? Sponsorship MCP Server
-  description: 'Remote Model Context Protocol server (Streamable HTTP, protocol revision 2025-06-18) at https://kannkidas.de/api/mcp
-    named kannkidas-sponsorship. Anonymous initialize and tools/list succeed and return two tools with full input
-    and output schemas: list_sponsor_slots (read-only) and create_sponsor_checkout (OAuth sponsorship:write, explicit
-    buyer confirmation, idempotency key). A server card is published at /.well-known/mcp/server-card.json and the
-    server is listed on Smithery.'
+- aid: kannkidas-de:kannkidas-de-kann-ki-das-api-api
+  name: Kann KI das? Sponsoring Agent Kann KI Das? API
+  description: >-
+    The Kann KI Das? API API from Kann KI das? Sponsoring Agent — 1 operation(s) for kann ki das? api.
   humanURL: https://kannkidas.de/agents/
-  baseURL: https://kannkidas.de/api/mcp
+  baseURL: https://kannkidas.de/api
   tags:
-  - MCP
-  - agent-native
-  - Sponsoring
-  tags_raw:
-  - MCP
-  - Agent-native
-  - Sponsoring
+  - Kann KI Das? API
   properties:
-  - type: MCPServer
-    url: mcp/kannkidas-de-mcp.yml
-  - type: MCPServer
-    url: https://kannkidas.de/api/mcp
-  - type: ToolCrosswalk
-    url: mcp/kannkidas-de-tool-crosswalk.yml
+  - type: OpenAPI
+    url: openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml
   - type: Documentation
     url: https://kannkidas.de/agents/
+  - type: APIReference
+    url: https://kannkidas.de/openapi.json
+  - type: GettingStarted
+    url: https://kannkidas.de/AGENTS.md
   - type: Authentication
     url: https://kannkidas.de/auth.md
+  - type: Pricing
+    url: https://kannkidas.de/pricing.md
+  - type: JSONSchema
+    url: json-schema/kannkidas-de-agent-purchase.json
   - type: Examples
-    url: examples/kannkidas-de-mcp-tools-list-example.json
-  image: https://kannkidas.de/og-default.jpg
-- aid: kannkidas-de:kann-ki-das-sponsoring-agent-a2a
-  name: Kann KI das? Sponsoring Agent (A2A)
-  description: Read-only Agent2Agent JSON-RPC endpoint at https://kannkidas.de/api/a2a described by the agent card
-    at /.well-known/agent-card.json (A2A protocolVersion 0.3.0). One skill, list-sponsor-slots, returns the verified
-    live status of the ten fixed sponsor slots as a data artifact; the agent never reserves or purchases and points
-    buyers to the documented OAuth and Stripe checkout path.
+    url: examples/kannkidas-de-list-sponsor-slots-example.json
+  - type: Examples
+    url: examples/kannkidas-de-search-products-example.json
+  - type: Examples
+    url: examples/kannkidas-de-x402-buyer-brief-402-example.json
+  - type: Conventions
+    url: conventions/kannkidas-de-conventions.yml
+  - type: Idempotency
+    url: conventions/kannkidas-de-conventions.yml
+  - type: ErrorCatalog
+    url: errors/kannkidas-de-problem-types.yml
+  - type: DataModel
+    url: data-model/kannkidas-de-data-model.yml
+  - type: RateLimits
+    url: rate-limits/kannkidas-de-rate-limits.yml
+  - type: Plans
+    url: plans/kannkidas-de-plans-pricing.yml
+  - type: Sandbox
+    url: sandbox/kannkidas-de-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/kannkidas-de-lifecycle.yml
+  - type: Conformance
+    url: conformance/kannkidas-de-conformance.yml
+- aid: kannkidas-de:kannkidas-de-oauth-api
+  name: Kann KI das? Sponsoring Agent OAuth API
+  description: The Oauth API from Kann KI das? Sponsoring Agent — 1 operation(s) for oauth.
   humanURL: https://kannkidas.de/agents/
-  baseURL: https://kannkidas.de/api/a2a
+  baseURL: https://kannkidas.de/api
   tags:
-  - A2A
-  - agent-native
-  - Sponsoring
-  tags_raw:
-  - A2A
-  - Agent-native
-  - Sponsoring
+  - Oauth
   properties:
-  - type: AgentCard
-    url: a2a/kannkidas-de-a2a.yml
-  - type: AgentCard
-    url: https://kannkidas.de/.well-known/agent-card.json
+  - type: OpenAPI
+    url: openapi/kannkidas-de-oauth-api-openapi.yml
   - type: Documentation
     url: https://kannkidas.de/agents/
+  - type: APIReference
+    url: https://kannkidas.de/openapi.json
+  - type: GettingStarted
+    url: https://kannkidas.de/AGENTS.md
+  - type: Authentication
+    url: https://kannkidas.de/auth.md
+  - type: Pricing
+    url: https://kannkidas.de/pricing.md
+  - type: JSONSchema
+    url: json-schema/kannkidas-de-agent-purchase.json
   - type: Examples
-    url: examples/kannkidas-de-a2a-message-send-example.json
-  image: https://kannkidas.de/og-default.jpg
+    url: examples/kannkidas-de-list-sponsor-slots-example.json
+  - type: Examples
+    url: examples/kannkidas-de-search-products-example.json
+  - type: Examples
+    url: examples/kannkidas-de-x402-buyer-brief-402-example.json
+  - type: Conventions
+    url: conventions/kannkidas-de-conventions.yml
+  - type: Idempotency
+    url: conventions/kannkidas-de-conventions.yml
+  - type: ErrorCatalog
+    url: errors/kannkidas-de-problem-types.yml
+  - type: DataModel
+    url: data-model/kannkidas-de-data-model.yml
+  - type: RateLimits
+    url: rate-limits/kannkidas-de-rate-limits.yml
+  - type: Plans
+    url: plans/kannkidas-de-plans-pricing.yml
+  - type: Sandbox
+    url: sandbox/kannkidas-de-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/kannkidas-de-lifecycle.yml
+  - type: Conformance
+    url: conformance/kannkidas-de-conformance.yml
+- aid: kannkidas-de:kannkidas-de-search-api
+  name: Kann KI das? Sponsoring Agent Search API
+  description: The Search API from Kann KI das? Sponsoring Agent — 3 operation(s) for search.
+  humanURL: https://kannkidas.de/agents/
+  baseURL: https://kannkidas.de/api
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/kannkidas-de-search-api-openapi.yml
+  - type: Documentation
+    url: https://kannkidas.de/agents/
+  - type: APIReference
+    url: https://kannkidas.de/openapi.json
+  - type: GettingStarted
+    url: https://kannkidas.de/AGENTS.md
+  - type: Authentication
+    url: https://kannkidas.de/auth.md
+  - type: Pricing
+    url: https://kannkidas.de/pricing.md
+  - type: JSONSchema
+    url: json-schema/kannkidas-de-agent-purchase.json
+  - type: Examples
+    url: examples/kannkidas-de-list-sponsor-slots-example.json
+  - type: Examples
+    url: examples/kannkidas-de-search-products-example.json
+  - type: Examples
+    url: examples/kannkidas-de-x402-buyer-brief-402-example.json
+  - type: Conventions
+    url: conventions/kannkidas-de-conventions.yml
+  - type: Idempotency
+    url: conventions/kannkidas-de-conventions.yml
+  - type: ErrorCatalog
+    url: errors/kannkidas-de-problem-types.yml
+  - type: DataModel
+    url: data-model/kannkidas-de-data-model.yml
+  - type: RateLimits
+    url: rate-limits/kannkidas-de-rate-limits.yml
+  - type: Plans
+    url: plans/kannkidas-de-plans-pricing.yml
+  - type: Sandbox
+    url: sandbox/kannkidas-de-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/kannkidas-de-lifecycle.yml
+  - type: Conformance
+    url: conformance/kannkidas-de-conformance.yml
+- aid: kannkidas-de:kannkidas-de-slots-api
+  name: Kann KI das? Sponsoring Agent Slots API
+  description: The Slots API from Kann KI das? Sponsoring Agent — 1 operation(s) for slots.
+  humanURL: https://kannkidas.de/agents/
+  baseURL: https://kannkidas.de/api
+  tags:
+  - Slots
+  properties:
+  - type: OpenAPI
+    url: openapi/kannkidas-de-slots-api-openapi.yml
+  - type: Documentation
+    url: https://kannkidas.de/agents/
+  - type: APIReference
+    url: https://kannkidas.de/openapi.json
+  - type: GettingStarted
+    url: https://kannkidas.de/AGENTS.md
+  - type: Authentication
+    url: https://kannkidas.de/auth.md
+  - type: Pricing
+    url: https://kannkidas.de/pricing.md
+  - type: JSONSchema
+    url: json-schema/kannkidas-de-agent-purchase.json
+  - type: Examples
+    url: examples/kannkidas-de-list-sponsor-slots-example.json
+  - type: Examples
+    url: examples/kannkidas-de-search-products-example.json
+  - type: Examples
+    url: examples/kannkidas-de-x402-buyer-brief-402-example.json
+  - type: Conventions
+    url: conventions/kannkidas-de-conventions.yml
+  - type: Idempotency
+    url: conventions/kannkidas-de-conventions.yml
+  - type: ErrorCatalog
+    url: errors/kannkidas-de-problem-types.yml
+  - type: DataModel
+    url: data-model/kannkidas-de-data-model.yml
+  - type: RateLimits
+    url: rate-limits/kannkidas-de-rate-limits.yml
+  - type: Plans
+    url: plans/kannkidas-de-plans-pricing.yml
+  - type: Sandbox
+    url: sandbox/kannkidas-de-sandbox.yml
+  - type: Lifecycle
+    url: lifecycle/kannkidas-de-lifecycle.yml
+  - type: Conformance
+    url: conformance/kannkidas-de-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -267,3 +438,17 @@ x-enrichment:
   status: enriched
   artifacts_added: 43
   pass: local-v3
+x-x402:
+  verified: true
+  probed: '2026-09-24'
+  url: "https://kannkidas.de/api/v1"
+  evidence:
+  - "header:payment-required"
+  control: 404
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://kannkidas.de/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3.0"
+  control: 404
