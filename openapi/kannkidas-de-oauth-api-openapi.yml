@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Kannkidas De OAuth API
+  title: Kann KI das? OAuth API
   version: 1.1.0
-  description: 'Operations tagged Oauth across 2 of this provider''s published API definitions: kannkidas-de-openapi.json, kannkidas-de-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Faceted product search plus machine-readable availability and buyer-confirmed Stripe Checkout for fixed sponsor placements.
 servers:
 - url: https://kannkidas.de/api
 tags:
@@ -39,8 +39,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       tags:
       - OAuth
-    servers:
-    - url: https://kannkidas.de/api
 components:
   schemas:
     Error:
@@ -62,6 +60,3 @@ components:
           scopes:
             sponsorship:read: Read own purchase status
             sponsorship:write: Create a confirmed checkout
-x-refined-from:
-- kannkidas-de-openapi.json
-- kannkidas-de-openapi.yml

@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Kannkidas De Kann KI Das? API
+  title: Kann KI Das? API
   version: 1.1.0
-  description: 'Operations tagged Kann KI Das? API across 2 of this provider''s published API definitions: kannkidas-de-openapi.json, kannkidas-de-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Faceted product search plus machine-readable availability and buyer-confirmed Stripe Checkout for fixed sponsor placements.
 servers:
 - url: https://kannkidas.de/api
 tags:
@@ -31,8 +31,6 @@ paths:
                 contentEncoding: base64
       tags:
       - Kann KI Das? API
-    servers:
-    - url: https://kannkidas.de/api
 components:
   securitySchemes:
     clientBasic:
@@ -46,6 +44,3 @@ components:
           scopes:
             sponsorship:read: Read own purchase status
             sponsorship:write: Create a confirmed checkout
-x-refined-from:
-- kannkidas-de-openapi.json
-- kannkidas-de-openapi.yml

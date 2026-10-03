@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Kannkidas De Search API
+  title: Kann KI das? Search API
   version: 1.1.0
-  description: 'Operations tagged Search across 2 of this provider''s published API definitions: kannkidas-de-openapi.json, kannkidas-de-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: Faceted product search plus machine-readable availability and buyer-confirmed Stripe Checkout for fixed sponsor placements.
 servers:
 - url: https://kannkidas.de/api
 tags:
@@ -58,8 +58,6 @@ paths:
           description: Invalid search parameters
       tags:
       - Search
-    servers:
-    - url: https://kannkidas.de/api
   /search/suggestions:
     get:
       operationId: suggestSearchTerms
@@ -88,8 +86,6 @@ paths:
                       $ref: '#/components/schemas/Suggestion'
       tags:
       - Search
-    servers:
-    - url: https://kannkidas.de/api
   /search/similar:
     get:
       operationId: getSimilarProducts
@@ -118,45 +114,8 @@ paths:
                       $ref: '#/components/schemas/SearchHit'
       tags:
       - Search
-    servers:
-    - url: https://kannkidas.de/api
 components:
   schemas:
-    SearchResponse:
-      type: object
-      required:
-      - found
-      - page
-      - perPage
-      - mode
-      - tookMs
-      - hits
-      - facets
-      properties:
-        found:
-          type: integer
-          minimum: 0
-        page:
-          type: integer
-          minimum: 1
-        perPage:
-          type: integer
-          minimum: 1
-          maximum: 60
-        mode:
-          enum:
-          - hybrid
-          - lexical
-          - lexical-fallback
-        tookMs:
-          type: integer
-          minimum: 0
-        hits:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchHit'
-        facets:
-          type: object
     SearchHit:
       type: object
       additionalProperties: false
@@ -194,6 +153,41 @@ components:
           type: object
           additionalProperties:
             type: string
+    SearchResponse:
+      type: object
+      required:
+      - found
+      - page
+      - perPage
+      - mode
+      - tookMs
+      - hits
+      - facets
+      properties:
+        found:
+          type: integer
+          minimum: 0
+        page:
+          type: integer
+          minimum: 1
+        perPage:
+          type: integer
+          minimum: 1
+          maximum: 60
+        mode:
+          enum:
+          - hybrid
+          - lexical
+          - lexical-fallback
+        tookMs:
+          type: integer
+          minimum: 0
+        hits:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchHit'
+        facets:
+          type: object
     Suggestion:
       type: object
       required:
@@ -223,6 +217,3 @@ components:
           scopes:
             sponsorship:read: Read own purchase status
             sponsorship:write: Create a confirmed checkout
-x-refined-from:
-- kannkidas-de-openapi.json
-- kannkidas-de-openapi.yml
