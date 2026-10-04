@@ -117,6 +117,8 @@ apis:
   humanURL: https://kannkidas.de/agents/
   baseURL: https://kannkidas.de/api
   tags:
+  - Agents
+  tags_raw:
   - Agent
   properties:
   - type: OpenAPI
@@ -210,6 +212,8 @@ apis:
   humanURL: https://kannkidas.de/agents/
   baseURL: https://kannkidas.de/api
   tags:
+  - Authentication
+  tags_raw:
   - Oauth
   properties:
   - type: OpenAPI

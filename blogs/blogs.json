@@ -1,0 +1,28 @@
+{
+  "repo": "kannkidas-de",
+  "feeds": [
+    {
+      "source": "https://kannkidas.de/ueber-uns/",
+      "feed_url": "https://kannkidas.de/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
+      "source": "https://kannkidas.de/ratgeber/",
+      "feed_url": "https://kannkidas.de/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
+      "source": "https://kannkidas.de/feed.xml",
+      "feed_url": "https://kannkidas.de/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    }
+  ],
+  "post_count": 50,
+  "fetched": "2026-10-03T12:30:02Z"
+}
