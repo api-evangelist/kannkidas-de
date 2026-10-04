@@ -110,6 +110,13 @@ paths:
       - Agent
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
     Purchase:
       type: object
       required:
@@ -142,13 +149,6 @@ components:
         currency:
           type: string
           const: EUR
-    Error:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
     RegistrationRequest:
       type: object
       additionalProperties: false

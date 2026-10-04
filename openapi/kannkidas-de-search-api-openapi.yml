@@ -153,6 +153,23 @@ components:
           type: object
           additionalProperties:
             type: string
+    Suggestion:
+      type: object
+      required:
+      - kind
+      - label
+      properties:
+        kind:
+          enum:
+          - product
+          - category
+          - query
+        label:
+          type: string
+        url:
+          type: string
+        category:
+          type: string
     SearchResponse:
       type: object
       required:
@@ -188,23 +205,6 @@ components:
             $ref: '#/components/schemas/SearchHit'
         facets:
           type: object
-    Suggestion:
-      type: object
-      required:
-      - kind
-      - label
-      properties:
-        kind:
-          enum:
-          - product
-          - category
-          - query
-        label:
-          type: string
-        url:
-          type: string
-        category:
-          type: string
   securitySchemes:
     clientBasic:
       type: http
