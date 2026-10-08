@@ -73,3 +73,33 @@ plans:
     currency: USDC
     network: eip155:84532 (Base Sepolia testnet)
     description: GET /api/v1 answers 402 with x402 v2 requirements; paying returns a buyer brief with live slot availability. AGENTS.md states it reserves no slot and confirms no commercial booking. Counted in plan_count as a priced surface but flagged non-commercial.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - metered
+  - one-time
+  units:
+  - object
+  plans:
+  - name: API access (search, slots, agent registration)
+    access: free
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Fester Sponsorplatz (fixed sponsor placement)
+    access: other
+    model: one-time
+    model_how: stated
+    units:
+    - object
+    periods:
+    - other
+  - name: x402 buyer brief (testnet demo)
+    access: other
+    model: metered
+    model_how: stated
+    units: []
+    periods: []
