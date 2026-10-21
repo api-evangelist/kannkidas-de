@@ -116,43 +116,6 @@ paths:
       - Search
 components:
   schemas:
-    SearchHit:
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      - type
-      - name
-      - url
-      - summary
-      - highlights
-      properties:
-        id:
-          type: string
-        type:
-          enum:
-          - product
-          - category
-        name:
-          type: string
-        company:
-          type: string
-        url:
-          type: string
-        category:
-          type: string
-        summary:
-          type: string
-        verdict:
-          type: string
-        verdictLabel:
-          type: string
-        score:
-          type: integer
-        highlights:
-          type: object
-          additionalProperties:
-            type: string
     Suggestion:
       type: object
       required:
@@ -205,6 +168,43 @@ components:
             $ref: '#/components/schemas/SearchHit'
         facets:
           type: object
+    SearchHit:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      - url
+      - summary
+      - highlights
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - product
+          - category
+        name:
+          type: string
+        company:
+          type: string
+        url:
+          type: string
+        category:
+          type: string
+        summary:
+          type: string
+        verdict:
+          type: string
+        verdictLabel:
+          type: string
+        score:
+          type: integer
+        highlights:
+          type: object
+          additionalProperties:
+            type: string
   securitySchemes:
     clientBasic:
       type: http

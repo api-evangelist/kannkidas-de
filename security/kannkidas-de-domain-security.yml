@@ -1,10 +1,10 @@
-generated: '2026-09-19'
+generated: '2026-10-20'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: kannkidas.de
   https: true
-  tls_version: TLSv1.2
+  tls_version: TLSv1.3
   cert_expires: Feb 25 23:59:59 2027 GMT
   hsts: true
   hsts_max_age: 63072000

@@ -1,0 +1,145 @@
+{
+  "@context": {
+    "@vocab": "https://kannkidas.de/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "kannkidas": "https://kannkidas.de/schema#",
+    "Purchase": "kannkidas:Purchase",
+    "purchase_id": {
+      "@id": "kannkidas:purchase_id",
+      "@type": "xsd:string"
+    },
+    "slot_id": {
+      "@id": "kannkidas:slot_id",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "kannkidas:status"
+    },
+    "checkout_url": {
+      "@id": "kannkidas:checkout_url",
+      "@type": "@id"
+    },
+    "status_url": {
+      "@id": "kannkidas:status_url",
+      "@type": "@id"
+    },
+    "expires_at": {
+      "@id": "kannkidas:expires_at",
+      "@type": "xsd:dateTime"
+    },
+    "amount": {
+      "@id": "kannkidas:amount",
+      "@type": "xsd:integer"
+    },
+    "currency": {
+      "@id": "kannkidas:currency",
+      "@type": "xsd:string"
+    },
+    "RegistrationRequest": "kannkidas:RegistrationRequest",
+    "name": {
+      "@id": "kannkidas:name",
+      "@type": "xsd:string"
+    },
+    "scopes": {
+      "@id": "kannkidas:scopes",
+      "@container": "@list"
+    },
+    "Error": "kannkidas:Error",
+    "message": {
+      "@id": "kannkidas:message",
+      "@type": "xsd:string"
+    },
+    "SearchHit": "kannkidas:SearchHit",
+    "id": {
+      "@id": "kannkidas:id",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "kannkidas:type"
+    },
+    "company": {
+      "@id": "kannkidas:company",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "kannkidas:url",
+      "@type": "xsd:string"
+    },
+    "category": {
+      "@id": "kannkidas:category",
+      "@type": "xsd:string"
+    },
+    "summary": {
+      "@id": "kannkidas:summary",
+      "@type": "xsd:string"
+    },
+    "verdict": {
+      "@id": "kannkidas:verdict",
+      "@type": "xsd:string"
+    },
+    "verdictLabel": {
+      "@id": "kannkidas:verdictLabel",
+      "@type": "xsd:string"
+    },
+    "score": {
+      "@id": "kannkidas:score",
+      "@type": "xsd:integer"
+    },
+    "highlights": {
+      "@id": "kannkidas:highlights"
+    },
+    "Suggestion": "kannkidas:Suggestion",
+    "kind": {
+      "@id": "kannkidas:kind"
+    },
+    "label": {
+      "@id": "kannkidas:label",
+      "@type": "xsd:string"
+    },
+    "SearchResponse": "kannkidas:SearchResponse",
+    "found": {
+      "@id": "kannkidas:found",
+      "@type": "xsd:integer"
+    },
+    "page": {
+      "@id": "kannkidas:page",
+      "@type": "xsd:integer"
+    },
+    "perPage": {
+      "@id": "kannkidas:perPage",
+      "@type": "xsd:integer"
+    },
+    "mode": {
+      "@id": "kannkidas:mode"
+    },
+    "tookMs": {
+      "@id": "kannkidas:tookMs",
+      "@type": "xsd:integer"
+    },
+    "hits": {
+      "@id": "kannkidas:hits",
+      "@container": "@list"
+    },
+    "facets": {
+      "@id": "kannkidas:facets"
+    },
+    "SlotList": "kannkidas:SlotList",
+    "slots": {
+      "@id": "kannkidas:slots",
+      "@container": "@list"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Kann KI das? Sponsoring Agent API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Kann KI das? Sponsoring Agent's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/kannkidas-de-agent-api-openapi.yml, openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml, openapi/kannkidas-de-oauth-api-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/kannkidas-de-agent-api-openapi.yml",
+    "openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml",
+    "openapi/kannkidas-de-oauth-api-openapi.yml",
+    "openapi/kannkidas-de-search-api-openapi.yml",
+    "openapi/kannkidas-de-slots-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,75 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/kannkidas-de-agent-api-openapi.yml
+- openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml
+- openapi/kannkidas-de-oauth-api-openapi.yml
+- openapi/kannkidas-de-search-api-openapi.yml
+- openapi/kannkidas-de-slots-api-openapi.yml
+vocabulary:
+  name: Kann KI das? Sponsoring Agent Domain Vocabulary
+  description: 'Terms declared by Kann KI das? Sponsoring Agent''s own API contract: its resource groups, objects and enumerations, with the contract''s
+    definitions. Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: Purchase
+    definition: 'Object declared by the contract with fields: purchase_id, slot_id, status, checkout_url, status_url, expires_at, amount, currency.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-agent-api-openapi.yml#/components/schemas/Purchase
+  - term: RegistrationRequest
+    definition: 'Object declared by the contract with fields: name, scopes.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-agent-api-openapi.yml#/components/schemas/RegistrationRequest
+  - term: Error
+    definition: 'Object declared by the contract with fields: message.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-agent-api-openapi.yml#/components/schemas/Error
+  - term: SearchHit
+    definition: 'Object declared by the contract with fields: id, type, name, company, url, category, summary, verdict, verdictLabel, score, highlights.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-search-api-openapi.yml#/components/schemas/SearchHit
+  - term: Suggestion
+    definition: 'Object declared by the contract with fields: kind, label, url, category.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-search-api-openapi.yml#/components/schemas/Suggestion
+  - term: SearchResponse
+    definition: 'Object declared by the contract with fields: found, page, perPage, mode, tookMs, hits, facets.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-search-api-openapi.yml#/components/schemas/SearchResponse
+  - term: SlotList
+    definition: 'Object declared by the contract with fields: slots.'
+    tags:
+    - Object
+    source: openapi/kannkidas-de-slots-api-openapi.yml#/components/schemas/SlotList
+  - term: Agent
+    definition: 'Resource group in the contract; its operation POST /agent/register: Register an OAuth client for an agent'
+    tags:
+    - Resource Group
+    source: openapi/kannkidas-de-agent-api-openapi.yml
+  - term: Kann KI Das? API
+    definition: 'Resource group in the contract; its operation GET /v1: Protocol-conformance endpoint on Base Sepolia testnet.'
+    tags:
+    - Resource Group
+    source: openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml
+  - term: OAuth
+    definition: 'Resource group in the contract; its operation POST /oauth/token: Issue an opaque access token using client credentials'
+    tags:
+    - Resource Group
+    source: openapi/kannkidas-de-oauth-api-openapi.yml
+  - term: Search
+    definition: 'Resource group in the contract; its operation GET /search: Search and facet products and categories'
+    tags:
+    - Resource Group
+    source: openapi/kannkidas-de-search-api-openapi.yml
+  - term: Slots
+    definition: 'Resource group in the contract; its operation GET /slots: List live sponsor-slot availability'
+    tags:
+    - Resource Group
+    source: openapi/kannkidas-de-slots-api-openapi.yml

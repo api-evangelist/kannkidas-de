@@ -1,0 +1,68 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 3
+  own: 2
+  other_domain: 0
+  platform: 1
+  roles:
+  - api
+  - source
+  - website
+hosts:
+- host: api.kannkidas.de
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: kannkidas.de
+  role: api
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: kannkidas.de
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - docs-index
+  - spec-found
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - Website
+  - DeveloperPortal
+  - Documentation
+  - GettingStarted
+  - AgentsMd
+  - APIReference
+  - LLMsTxt
+  - APICatalog
+  - OpenIDConnect
+  - ContentSignal
+  - Pricing
+  - TermsOfService
+  - PrivacyPolicy
+  - About
+  - Blog
+  - BlogRSS
+  - Sitemap
+  serves:
+  - api
+  - docs
+  - spec
+  - cdn
+  vendor: cloudfront
+  registrable_domain: kannkidas.de
+  role: website
+  relation: own

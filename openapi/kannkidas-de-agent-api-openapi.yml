@@ -110,8 +110,13 @@ paths:
       - Agent
 components:
   schemas:
-    PurchaseRequest:
-      $ref: https://kannkidas.de/schema/agent-purchase.json
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
     Purchase:
       type: object
       required:
@@ -164,13 +169,8 @@ components:
             - sponsorship:write
           default:
           - sponsorship:read
-    Error:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
+    PurchaseRequest:
+      $ref: https://kannkidas.de/schema/agent-purchase.json
   securitySchemes:
     clientBasic:
       type: http
