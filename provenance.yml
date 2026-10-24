@@ -45,10 +45,22 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/kannkidas-de-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/kannkidas-de-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
+  json-ld/kannkidas-de-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/kannkidas-de-agent-purchase.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-19T193153.yml:
@@ -81,10 +93,28 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/kannkidas-de-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
   llms/kannkidas-de-AGENTS.md:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
+  llms/kannkidas-de-llms-provenance.yml:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
   llms/kannkidas-de-llms.txt:
@@ -94,24 +124,35 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   mcp/kannkidas-de-mcp.yml:
-    method: unknown
-    evidence: no authorship recorded
-  mcp/kannkidas-de-tool-crosswalk.yml:
     method: derived
     evidence: declared in the artifact
   openapi/_original/kannkidas-de-openapi.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
-  openapi/kannkidas-de-openapi.yml:
+    evidence: byte-identical to https://kannkidas.de/openapi.json (sha256 73d161719788, fetched 2026-10-04)
+  openapi/_original/kannkidas-de-openapi.yml:
+    method: harvested
+    evidence: the same operations as https://kannkidas.de/openapi.json (sha256 73d161719788, fetched 2026-10-04)
+  openapi/kannkidas-de-agent-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/kannkidas-de-kann-ki-das-api-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/kannkidas-de-oauth-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/kannkidas-de-search-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/kannkidas-de-slots-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   overlays/kannkidas-de-openapi-overlay.yaml:
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  packages/kannkidas-de-packages.yml:
     method: unknown
     evidence: no authorship recorded
-  packages/kannkidas-de-packages.yml:
-    method: searched
-    evidence: declared in the artifact
   plans/kannkidas-de-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
@@ -120,6 +161,9 @@ artifacts:
     evidence: no authorship recorded
   regulatory/kannkidas-de-regulatory-posture.yml:
     method: searched
+    evidence: declared in the artifact
+  rules/kannkidas-de-rules.yml:
+    method: generated
     evidence: declared in the artifact
   sandbox/kannkidas-de-sandbox.yml:
     method: searched
@@ -139,6 +183,12 @@ artifacts:
   skills/kannkidas-de-find-software.md:
     method: unknown
     evidence: no authorship recorded
+  vendors/kannkidas-de-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/kannkidas-de-vocabulary.yml:
+    method: derived
+    evidence: declared in the artifact
   well-known/kannkidas-de-agent-skills-index.json:
     method: unknown
     evidence: no authorship recorded
